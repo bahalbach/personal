@@ -20,12 +20,12 @@ const About: NextPage = () => {
       <div className="max-w-6xl mx-auto p-5 sm:p-10">
         <div className="grid md:grid-cols-2 gap-5">
           {/* contact methods */}
-          <div className="flex flex-col">
-            <div className="flex flex-row items-center gap-4 rounded-md border hover:border-blue-500 p-5 text-sm">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-row items-center gap-4 rounded-md border hover:border-blue-500 p-5 text-sm dark:bg-gray-900 bg-gray-100 dark:text-gray-200">
               <MdEmail />
               <span>{userData.contact.email}</span>
             </div>
-            <div className="flex flex-row items-center gap-4 rounded-md border hover:border-blue-500 p-5 text-sm">
+            <div className="flex flex-row items-center gap-4 rounded-md border hover:border-blue-500 p-5 text-sm dark:bg-gray-900 bg-gray-100 dark:text-gray-200">
               <AiFillPhone />
               <span>{userData.contact.phone}</span>
             </div>

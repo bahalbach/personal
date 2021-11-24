@@ -31,7 +31,7 @@ export default function Navbar() {
             <a
               className={`text-base  ${
                 router.asPath === "/about"
-                  ? "text-gray-800 font-bold dark:text-gray-400"
+                  ? "text-gray-800 font-bold dark:text-gray-100"
                   : "text-gray-600 dark:text-gray-300 font-normal "
               }`}
             >
@@ -42,7 +42,7 @@ export default function Navbar() {
             <a
               className={`text-base  ${
                 router.asPath === "/projects"
-                  ? "text-gray-800 font-bold dark:text-gray-400"
+                  ? "text-gray-800 font-bold dark:text-gray-100"
                   : "text-gray-600 dark:text-gray-300 font-normal "
               }`}
             >
@@ -53,7 +53,7 @@ export default function Navbar() {
             <a
               className={`text-base  ${
                 router.asPath === "/contact"
-                  ? "text-gray-800 font-bold dark:text-gray-400"
+                  ? "text-gray-800 font-bold dark:text-gray-100"
                   : "text-gray-600 dark:text-gray-300 font-normal "
               }`}
             >
