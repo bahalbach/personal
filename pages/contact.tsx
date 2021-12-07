@@ -4,6 +4,7 @@ import Layout from "../components/layout";
 import userData from "../constants/data";
 import { MdEmail } from "react-icons/md";
 import { AiFillPhone } from "react-icons/ai";
+import KeyButtons from "../components/KeyButtons";
 
 const About: NextPage = () => {
   return (
@@ -16,22 +17,23 @@ const About: NextPage = () => {
         <h1 className="text-6xl lg:text-9xl max-w-lg font-bold text-gray-500 py-5 dark:text-gray-500 text-center">
           Contact
         </h1>
+        <KeyButtons />
       </div>
+
       <div className="max-w-6xl mx-auto p-5 sm:p-10">
-        <div className="grid md:grid-cols-2 gap-5">
-          {/* contact methods */}
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-row items-center gap-4 rounded-md border hover:border-blue-500 p-5 text-sm dark:bg-gray-900 bg-gray-100 dark:text-gray-200">
-              <MdEmail />
-              <span>{userData.contact.email}</span>
-            </div>
-            <div className="flex flex-row items-center gap-4 rounded-md border hover:border-blue-500 p-5 text-sm dark:bg-gray-900 bg-gray-100 dark:text-gray-200">
-              <AiFillPhone />
-              <span>{userData.contact.phone}</span>
-            </div>
+        {/* contact methods */}
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-row items-center gap-4 rounded-md border hover:border-blue-500 p-5 text-sm dark:bg-gray-900 bg-gray-100 dark:text-gray-200">
+            <MdEmail />
+            <span>{userData.contact.email}</span>
           </div>
-          {/* contact form */}
-          {/* <div className="max-w-min">
+          <div className="flex flex-row items-center gap-4 rounded-md border hover:border-blue-500 p-5 text-sm dark:bg-gray-900 bg-gray-100 dark:text-gray-200">
+            <AiFillPhone />
+            <span>{userData.contact.phone}</span>
+          </div>
+        </div>
+        {/* contact form */}
+        {/* <div className="max-w-min">
             <form className="rounded-lg bg-white p-4 flex flex-col">
               <label htmlFor="name" className="text-sm text-gray-600 mx-4">
                 {" "}
@@ -72,7 +74,6 @@ const About: NextPage = () => {
               </button>
             </form>
           </div> */}
-        </div>
       </div>
     </Layout>
   );

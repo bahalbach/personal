@@ -30,9 +30,11 @@ const Projects: NextPage = () => {
                   </a>
                 </div>
                 <div className="w-full md:w-1/2 px-5 my-2 md:my-0 space-y-4">
-                  <h2 className="text-lg md:text-2xl font-semibold text-gray-800 dark:text-gray-200">
-                    {name}
-                  </h2>
+                  <a href={href}>
+                    <h2 className="text-lg md:text-2xl font-semibold text-gray-800 dark:text-gray-200">
+                      {name}
+                    </h2>
+                  </a>
                   <p className="text-base text-gray-700 dark:text-gray-300">
                     {description}
                   </p>
@@ -53,7 +55,7 @@ const Projects: NextPage = () => {
         <h1 className="text-3xl lg:text-6xl max-w-lg font-bold text-gray-500 py-5 dark:text-gray-500 text-center lg:mb-5">
           Other Projects
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 my-10 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 my-10 gap-10 sm:mx-5">
           {userData.minorProjects.map(
             ({ name, description, href, github, techUsed }) => {
               return (

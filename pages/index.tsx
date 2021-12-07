@@ -15,7 +15,7 @@ const Home: NextPage = () => {
       </Head>
       <Hero />
       <FavouriteProjects />
-      <div className="flex justify-center pb-10">
+      <div className="flex justify-center">
         <LinkButton
           icon={<AiFillGithub />}
           href={userData.socialLinks.github}

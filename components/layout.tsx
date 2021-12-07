@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <meta name="description" content="A personal site for Ben Halbach" />
       </Head>
       <Navbar />
-      <main className="bg-gray-200  dark:bg-gray-900 flex flex-col min-h-screen flex-auto items-stretch">
+      <main className="bg-gray-200  dark:bg-gray-900 flex flex-col min-h-screen flex-auto items-stretch pb-10">
         {children}
       </main>
       <Footer />

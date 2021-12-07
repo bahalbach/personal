@@ -15,14 +15,19 @@ const userData = {
       "I'm a software engineer who has been programming since 2010, worked professionally with C++, and developed personal projects in javascript and python.",
     qualities: [
       {
+        tag: "programming languages",
+        description:
+          "I have been using Python and Javascript the most recently, but I am excited about learning and using new programming languages and frameworks. ",
+      },
+      {
+        tag: "Machine Learning",
+        description:
+          "I have had an interest in Machine Learning and enjoy studying the math behind it as a hobby. A new project demonstrating that will be coming soon.",
+      },
+      {
         tag: "languages",
         description:
           "I am a native English speaker and I have been learning Chinese while living in Taiwan for the past few years. I passed the TOCFL Band C Level 5 test for Chinese listening.",
-      },
-      {
-        tag: "programming languages",
-        description:
-          "I have been using Python and Javascript the most recently, but I am excited about learning and using new programming languages and frameworks.",
       },
     ],
   },

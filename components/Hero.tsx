@@ -1,9 +1,7 @@
 import React from "react";
 import userData from "../constants/data";
 
-import { MdEmail } from "react-icons/md";
-import { AiOutlineDownload } from "react-icons/ai";
-import LinkButton from "./LinkButton";
+import KeyButtons from "./KeyButtons";
 
 export default function Hero() {
   return (
@@ -17,18 +15,7 @@ export default function Hero() {
         <h2 className="text-4xl text-gray-700 dark:text-gray-200 my-2">
           {userData.designation}
         </h2>
-        <div className="flex flex-col sm:flex-row items-center flex-auto sm:justify-evenly">
-          <LinkButton
-            href={`mailto:${userData.contact.email}`}
-            text="Contact Me"
-            icon={<MdEmail />}
-          />
-          <LinkButton
-            href="/files/Halbach_resume.pdf"
-            text="Resume"
-            icon={<AiOutlineDownload />}
-          />
-        </div>
+        <KeyButtons />
       </div>
       {/* Image container */}
       {/* <div className="hidden lg:block relative w-full md:w-1/2 -mr-40 mt-20">

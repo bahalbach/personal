@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import KeyButtons from "../components/KeyButtons";
 import Layout from "../components/layout";
 import userData from "../constants/data";
 
@@ -9,7 +10,7 @@ const About: NextPage = () => {
       <Head>
         <title>About Me</title>
       </Head>
-      <div className="max-w-6xl mx-auto">
+      <div className="w-full max-w-6xl mx-auto">
         <h1 className="text-6xl lg:text-9xl max-w-lg font-bold text-gray-500 py-5 dark:text-gray-500 text-center">
           About
         </h1>
@@ -31,6 +32,7 @@ const About: NextPage = () => {
             ))}
           </div>
         </div>
+        <KeyButtons />
       </div>
     </Layout>
   );
