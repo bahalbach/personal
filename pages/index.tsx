@@ -6,6 +6,8 @@ import Layout from "../components/layout";
 import LinkButton from "../components/LinkButton";
 import { AiFillGithub } from "react-icons/ai";
 import userData from "../constants/data";
+import About from "../components/About";
+import Projects from "../components/Projects";
 
 const Home: NextPage = () => {
   return (
@@ -13,7 +15,9 @@ const Home: NextPage = () => {
       <Head>
         <title>Ben Halbach</title>
       </Head>
-      <Hero />
+      <About />
+      <Projects />
+      {/* <Hero />
       <FavouriteProjects />
       <div className="flex justify-center">
         <LinkButton
@@ -21,7 +25,7 @@ const Home: NextPage = () => {
           href={userData.socialLinks.github}
           text="My Github"
         />
-      </div>
+      </div> */}
     </Layout>
   );
 };
