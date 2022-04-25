@@ -57,7 +57,7 @@ const userData = {
         "I wanted to try out structuring a website with Next instead of React Router, but now that this is a single page portfolio that seems a bit excessive.",
       ],
       href: "/",
-      github: "",
+      github: "https://github.com/bahalbach/personal",
       techUsed: ["React", "Next.js", "Tailwind CSS"],
     },
     {

@@ -26,9 +26,9 @@ const Home: NextPage = () => {
         <LinkButton
           icon={<AiFillGithub />}
           href={userData.socialLinks.github}
-          text="My Github"
+          text="My GitHub"
         />
-      </div> 
+      </div>
       <div className="max-w-6xl mx-auto p-5 sm:p-10">
         {/* contact methods */}
         <div className="flex flex-col gap-4">
@@ -41,7 +41,6 @@ const Home: NextPage = () => {
             <span>{userData.contact.phone}</span>
           </div>
         </div>
-        
       </div>
     </Layout>
   );

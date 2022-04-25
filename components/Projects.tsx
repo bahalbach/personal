@@ -2,6 +2,60 @@ import React from "react";
 import Image from "next/image";
 import pf2calculator from "../public/images/pf2calculator.png";
 import userData from "../constants/data";
+import LinkButton from "./LinkButton";
+import { AiFillGithub } from "react-icons/ai";
+import { GiLookAt } from "react-icons/gi";
+
+function ProjectBody({
+  href,
+  github,
+  description,
+  techUsed,
+}: {
+  href: string;
+  github: string;
+  description: string[];
+  techUsed: string[];
+}) {
+  return (
+    <React.Fragment>
+      <div className="flex flex-row items-center flex-auto justify-evenly">
+        <LinkButton
+          href={href}
+          text="See in action"
+          text_size="text-sm"
+          icon={<GiLookAt />}
+        />
+        <LinkButton
+          href={github}
+          text="Project GitHub"
+          text_size="text-sm"
+          icon={<AiFillGithub />}
+        />
+      </div>
+      {description.map((paragraph) => {
+        return (
+          <p
+            className="text-base text-gray-700 dark:text-gray-300"
+            key={paragraph}
+          >
+            {paragraph}
+          </p>
+        );
+      })}
+
+      <div className="flex justify-evenly gap-5 flex-wrap">
+        {techUsed.map((tech) => {
+          return (
+            <p key={tech} className="text-sm text-gray-800 dark:text-gray-200">
+              {tech}
+            </p>
+          );
+        })}
+      </div>
+    </React.Fragment>
+  );
+}
 
 export default function Projects() {
   return (
@@ -28,29 +82,12 @@ export default function Projects() {
                     {name}
                   </h2>
                 </a>
-                {description.map((paragraph) => {
-                  return (
-                    <p
-                      className="text-base text-gray-700 dark:text-gray-300"
-                      key={paragraph}
-                    >
-                      {paragraph}
-                    </p>
-                  );
-                })}
-
-                <div className="flex justify-evenly gap-5 flex-wrap">
-                  {techUsed.map((tech) => {
-                    return (
-                      <p
-                        key={tech}
-                        className="text-sm text-gray-800 dark:text-gray-200"
-                      >
-                        {tech}
-                      </p>
-                    );
-                  })}
-                </div>
+                <ProjectBody
+                  href={href}
+                  github={github}
+                  description={description}
+                  techUsed={techUsed}
+                />
               </div>
             </div>
           );
@@ -70,28 +107,12 @@ export default function Projects() {
                       {name}
                     </h2>
                   </a>
-                  {description.map((paragraph) => {
-                    return (
-                      <p
-                        className="text-base text-gray-700 dark:text-gray-300"
-                        key={paragraph}
-                      >
-                        {paragraph}
-                      </p>
-                    );
-                  })}
-                  <div className="flex justify-evenly">
-                    {techUsed.map((tech) => {
-                      return (
-                        <p
-                          key={tech}
-                          className="text-sm text-gray-800 dark:text-gray-200"
-                        >
-                          {tech}
-                        </p>
-                      );
-                    })}
-                  </div>
+                  <ProjectBody
+                    href={href}
+                    github={github}
+                    description={description}
+                    techUsed={techUsed}
+                  />
                 </div>
               </div>
             );
