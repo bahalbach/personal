@@ -12,7 +12,7 @@ const userData = {
   about: {
     intro: "Hi, I'm Ben Halbach.",
     title:
-      "I'm a software engineer who has been programming since 2010, worked professionally with C++, and developed personal projects in javascript and python.",
+      "I'm a software engineer who has been programming since 2010, worked professionally with C++, and developed personal projects in Javascript and Python.",
     qualities: [
       {
         tag: "programming languages",
@@ -22,7 +22,12 @@ const userData = {
       {
         tag: "Machine Learning",
         description:
-          "I have had an interest in Machine Learning and enjoy studying the math behind it as a hobby. A new project demonstrating that will be coming soon.",
+          "I have had an interest in Machine Learning and enjoy studying the math behind it as a hobby. I am currently working on analysing NBA data with TensorFlow and Scikit-learn.",
+      },
+      {
+        tag: "University",
+        description:
+          "I recieved a full scholarship to attend university and I was eligable to graduate with a degree in Computer Science after just two years, but I decided to spend a year abroad studying mathmatics.",
       },
       {
         tag: "languages",
@@ -34,8 +39,10 @@ const userData = {
   majorProjects: [
     {
       name: "Pathfinder Damage Calculator",
-      description:
+      description: [
         "Calculate and graph the results of different attack routines in the Pathfinder role-playing game. It computes a full probability distibution of damage while progressing through user determined descision trees depepending on the outcomes of previous attacks.",
+        "This tool currently has over 100 users a month as it provides an easy way to input and display the effectivness of various options.",
+      ],
       href: "https://bahalbach.github.io/PF2Calculator",
       github: "https://github.com/bahalbach/PF2Calculator",
       techUsed: ["Typescript", "React", "Redux", "Material UI"],
@@ -45,14 +52,14 @@ const userData = {
   minorProjects: [
     {
       name: "Personal Webpage",
-      description: "A website to act as a portfolio.",
+      description: ["A website to act as a portfolio."],
       href: "/",
       github: "",
       techUsed: ["React", "Next.js", "Tailwind CSS"],
     },
     {
       name: "Lists",
-      description: "Nested lists with drag and drop reorganization.",
+      description: ["Nested lists with drag and drop reorganization."],
       href: "https://bahalbach.github.io/lists/",
       github: "https://github.com/bahalbach/lists",
       techUsed: ["React", "Redux"],
@@ -60,8 +67,9 @@ const userData = {
 
     {
       name: "Vipkid Service Fee Calculator",
-      description:
+      description: [
         "A tool to calculate service fee income for Vipkid teachers.",
+      ],
       href: "https://bahalbach.github.io/vipkid",
       github:
         "https://github.com/bahalbach/bahalbach.github.io/blob/master/vipkid.html",

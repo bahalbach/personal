@@ -28,13 +28,24 @@ export default function Projects() {
                     {name}
                   </h2>
                 </a>
-                <p className="text-base text-gray-700 dark:text-gray-300">
-                  {description}
-                </p>
+                {description.map((paragraph) => {
+                  return (
+                    <p
+                      className="text-base text-gray-700 dark:text-gray-300"
+                      key={paragraph}
+                    >
+                      {paragraph}
+                    </p>
+                  );
+                })}
+
                 <div className="flex justify-evenly gap-5 flex-wrap">
                   {techUsed.map((tech) => {
                     return (
-                      <p key={tech} className="font-bold dark:text-gray-100">
+                      <p
+                        key={tech}
+                        className="text-sm text-gray-800 dark:text-gray-200"
+                      >
                         {tech}
                       </p>
                     );
@@ -59,13 +70,23 @@ export default function Projects() {
                       {name}
                     </h2>
                   </a>
-                  <p className="text-base text-gray-700 dark:text-gray-300">
-                    {description}
-                  </p>
+                  {description.map((paragraph) => {
+                    return (
+                      <p
+                        className="text-base text-gray-700 dark:text-gray-300"
+                        key={paragraph}
+                      >
+                        {paragraph}
+                      </p>
+                    );
+                  })}
                   <div className="flex justify-evenly">
                     {techUsed.map((tech) => {
                       return (
-                        <p key={tech} className="font-bold dark:text-gray-100">
+                        <p
+                          key={tech}
+                          className="text-sm text-gray-800 dark:text-gray-200"
+                        >
                           {tech}
                         </p>
                       );
