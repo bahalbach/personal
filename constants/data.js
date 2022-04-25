@@ -12,22 +12,22 @@ const userData = {
   about: {
     intro: "Hi, I'm Ben Halbach.",
     title:
-      "I'm a software engineer who has been programming since 2010, worked professionally with C++, and developed personal projects in Javascript and Python.",
+      "I'm a software engineer who has been programming since 2010, worked professionally with C++, and developed personal projects in JavaScript and Python.",
     qualities: [
       {
         tag: "programming languages",
         description:
-          "I have been using Python and Javascript the most recently, but I am excited about learning and using new programming languages and frameworks. ",
+          "I have been using Python and TypeScript the most recently, but I am excited about learning and using new programming languages and frameworks. ",
       },
       {
         tag: "Machine Learning",
         description:
-          "I have had an interest in Machine Learning and enjoy studying the math behind it as a hobby. I am currently working on analysing NBA data with TensorFlow and Scikit-learn.",
+          "I have had an interest in Machine Learning and enjoy studying the math behind it as a hobby. I am currently working on analyzing NBA data with TensorFlow and Scikit-learn.",
       },
       {
         tag: "University",
         description:
-          "I recieved a full scholarship to attend university and I was eligable to graduate with a degree in Computer Science after just two years, but I decided to spend a year abroad studying mathmatics.",
+          "I received a full scholarship to attend university and I was eligible to graduate with a degree in Computer Science after just two years, but I decided to spend a year abroad studying mathematics.",
       },
       {
         tag: "languages",
@@ -52,14 +52,20 @@ const userData = {
   minorProjects: [
     {
       name: "Personal Webpage",
-      description: ["A website to act as a portfolio."],
+      description: [
+        "A website to act as a portfolio.",
+        "I wanted to try out structuring a website with Next instead of React Router, but now that this is a single page portfolio that seems a bit excessive.",
+      ],
       href: "/",
       github: "",
       techUsed: ["React", "Next.js", "Tailwind CSS"],
     },
     {
       name: "Lists",
-      description: ["Nested lists with drag and drop reorganization."],
+      description: [
+        "Nested lists with drag and drop reorganization.",
+        "I wanted a way to hierarchically organize notes, and the drag and drop feature is key to reorganizing them. But I stopped development on this because the gains from the hierarchical representation are not work extra hassle added to creating and editing notes.",
+      ],
       href: "https://bahalbach.github.io/lists/",
       github: "https://github.com/bahalbach/lists",
       techUsed: ["React", "Redux"],
@@ -69,6 +75,7 @@ const userData = {
       name: "Vipkid Service Fee Calculator",
       description: [
         "A tool to calculate service fee income for Vipkid teachers.",
+        "VIPKid changed to a progressive bonus structure which was complicated to calculate by hand, so I built this tool to allow teachers to easily see how much money they would make.",
       ],
       href: "https://bahalbach.github.io/vipkid",
       github:
