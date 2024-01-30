@@ -12,18 +12,22 @@ const userData = {
   about: {
     intro: "Hi, I'm Ben Halbach.",
     title:
-      "I'm a software engineer who has been programming since 2010, worked professionally with C++, and developed personal projects in JavaScript and Python.",
+      "I'm a software engineer who has been programming since 2010. I'm recently proud of the work I did making a customizable multi-tenant application with components for the site and customization tool UI automatically generated from the customization schema.",
     qualities: [
       {
         tag: "programming languages",
         description:
           "I have been using Python and TypeScript the most recently, but I am excited about learning and using new programming languages and frameworks. ",
       },
-      {
-        tag: "Machine Learning",
-        description:
-          "I have had an interest in Machine Learning and enjoy studying the math behind it as a hobby. I am currently working on analyzing NBA data with TensorFlow and Scikit-learn.",
-      },
+      // {
+      //   tag: "touched tech",
+      //   description: "SQS, neo4j, elasticsearch, mongoDB, graphQL, postgreSQL/mySQL/SQL, react, redux, redux saga, nextjs, express, django, flask, jinja, fastAPI, gin, Python, Go, Javascript, Typescript, Looker Studio"
+      // },
+      // {
+      //   tag: "Machine Learning",
+      //   description:
+      //     "I have had an interest in Machine Learning and enjoy studying the math behind it as a hobby. I am currently working on analyzing NBA data with TensorFlow and Scikit-learn.",
+      // },
       {
         tag: "University",
         description:
