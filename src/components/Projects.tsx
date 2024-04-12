@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import pf2calculator from "../public/images/pf2calculator.png";
 import userData from "../constants/data";
 import LinkButton from "./LinkButton";
 import { AiFillGithub } from "react-icons/ai";
@@ -65,7 +64,7 @@ export default function Projects() {
       </h1>
 
       {userData.majorProjects.map(
-        ({ name, description, href, github, techUsed }) => {
+        ({ name, photo, description, href, github, techUsed }) => {
           return (
             <div
               className="flex flex-col md:flex-row md:items-center py-10 sm:mx-5 shadow-xl rounded-md bg-gray-100 dark:bg-gray-700 my-10"
@@ -73,7 +72,15 @@ export default function Projects() {
             >
               <div className="w-full md:w-1/2  relative px-5">
                 <a href={href}>
-                  <Image src={pf2calculator} alt={name} />
+                  {/* <Image
+                    src="/vercel.svg"
+                    alt="Vercel Logo"
+                    className="dark:invert"
+                    width={100}
+                    height={24}
+                    priority
+                  /> */}
+                  <Image src={photo} alt={name} width={516} height={250} className="w-full" />
                 </a>
               </div>
               <div className="w-full md:w-1/2 px-5 my-2 md:my-0 space-y-4">

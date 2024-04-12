@@ -1,5 +1,6 @@
 {
   "name": "personal",
+  "version": "0.2.0",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -9,20 +10,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "react": "^18",
+    "react-dom": "^18",
     "next": "14.1.4",
-    "next-themes": "^0.3.0",
-    "postcss-preset-env": "^9.5.4",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-icons": "^5.0.1",
-    "tailwindcss": "^3.4.3"
+    "react-icons": "^5.0.1"
   },
   "devDependencies": {
-    "@types/node": "20.12.7",
-    "@types/react": "18.2.75",
-    "@types/react-dom": "^18.2.24",
-    "eslint": "^8.57.0",
-    "eslint-config-next": "14.1.4",
-    "typescript": "5.4.5"
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.4"
   }
 }

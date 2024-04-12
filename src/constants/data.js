@@ -50,7 +50,7 @@ const userData = {
       href: "https://bahalbach.github.io/PF2Calculator",
       github: "https://github.com/bahalbach/PF2Calculator",
       techUsed: ["Typescript", "React", "Redux", "Material UI"],
-      photo: "/../public/images/pf2calculator.png",
+      photo: "/images/pf2calculator.png",
     },
   ],
   minorProjects: [
