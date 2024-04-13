@@ -19,9 +19,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <body className={inter.className}>
         <Navbar />
         <main className="bg-gray-200  dark:bg-gray-900 flex flex-col min-h-screen flex-auto items-stretch pb-10">
