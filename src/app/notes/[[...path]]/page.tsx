@@ -12,8 +12,8 @@ export default async function Page({
 }) {
   const fileMap = await getFileMap();
   let currentFileMap: FileMapItem = fileMap;
-  const validPath: string[] = [];
-  const validPathLabels: string[] = [];
+  const validPath: string[] = [fileMap.canonicalLabel];
+  const validPathLabels: string[] = [fileMap.label];
   let invalidPath;
   let label;
   if (path) {
@@ -37,7 +37,7 @@ export default async function Page({
       <ul className="flex gap-4 p-4">
         {validPath.map((value, pathIndex) => (
           <li key={value}>
-            <a href={`/notes/${validPath.slice(0, pathIndex + 1).join("/")}`}>
+            <a href={`/${validPath.slice(0, pathIndex + 1).join("/")}`}>
               {validPathLabels[pathIndex]}
             </a>
           </li>
@@ -54,11 +54,7 @@ export default async function Page({
     <div className="p-4">The path {invalidPath.join("/")} is not valid</div>
   ) : null;
   const noteTree = (
-    <NoteTree
-      label={currentFileMap.label}
-      tree={currentFileMap}
-      path={validPath}
-    />
+    <NoteTree active={true} tree={currentFileMap} path={validPath} />
   );
   return (
     <div className="p-4">

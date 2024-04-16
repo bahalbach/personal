@@ -17,6 +17,7 @@ export async function getFileMap() {
       },
     }
   );
+  console.log("fetch tree");
 
   const tree = res.data.tree;
   const fileMap: FileMapDir = {
@@ -26,7 +27,7 @@ export async function getFileMap() {
     children: new Map(),
   };
   treeLoop: for (let index = 0; index < tree.length; index++) {
-    const { path, type, url } = tree[index];
+    const { path, type, url, sha } = tree[index];
     if (!path) continue;
     const isDir = type === "tree";
     const isMd = type === "blob" && path.endsWith(".md");
@@ -61,6 +62,7 @@ export async function getFileMap() {
         label: finalPart,
         canonicalLabel,
         url,
+        sha,
       };
     }
 

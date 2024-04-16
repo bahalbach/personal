@@ -1,33 +1,36 @@
 import Note from "./Note";
 
 export default function NoteTree({
-  label,
+  active,
   tree,
   path,
 }: {
-  label: string;
+  active: boolean;
   tree: FileMapItem;
   path: string[];
 }) {
   if (tree.type === "markdown") {
-    return <Note label={label} content={tree} />;
+    return <Note active={active} content={tree} path={path} />;
   }
 
+  const link = <a href={`/${path.join("/")}`}>{tree.label}</a>;
+
+  if (!active) {
+    return link;
+  }
   const treeNodes = [];
 
   for (let [sublabel, node] of tree.children) {
     const nextPath = [...path, sublabel];
     treeNodes.push(
       <li key={sublabel}>
-        <NoteTree label={node.label} tree={node} path={nextPath} />
+        <NoteTree active={false} tree={node} path={nextPath} />
       </li>
     );
   }
   return (
     <div>
-      <h2>
-        <a href={`/notes/${path.join("/")}`}>{label}</a>
-      </h2>
+      <h2>{link}</h2>
       <ul className="pl-4">{treeNodes}</ul>
     </div>
   );

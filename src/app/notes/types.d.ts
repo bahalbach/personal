@@ -3,6 +3,7 @@ type FileMapMd = {
   label: string;
   canonicalLabel: string;
   url: string;
+  sha: string;
 };
 type FileMapDir = {
   type: "directory";
