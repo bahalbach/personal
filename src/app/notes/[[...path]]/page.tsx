@@ -32,6 +32,8 @@ export default async function Page({
     }
   }
 
+  // TODO: have nav links to go back to linking entities, for
+  // when there are internal links that aren't parent-child
   const nav = (
     <nav>
       <ul className="flex gap-4 p-4">
