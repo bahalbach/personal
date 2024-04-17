@@ -1,5 +1,10 @@
 import { Octokit } from "octokit";
-import Markdoc from "@markdoc/markdoc";
+import rehypeStringify from "rehype-stringify";
+import remarkFrontmatter from "remark-frontmatter";
+import remarkGfm from "remark-gfm";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import { unified } from "unified";
 
 export default async function Note({
   content,
@@ -28,9 +33,13 @@ export default async function Note({
   // account mediaType.format=raw
   const text = res.data as unknown as string;
 
-  const ast = Markdoc.parse(text);
-  const markdown = Markdoc.transform(ast);
-  const html = Markdoc.renderers.html(markdown);
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkFrontmatter)
+    .use(remarkGfm)
+    .use(remarkRehype)
+    .use(rehypeStringify)
+    .process(text);
 
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  return <div dangerouslySetInnerHTML={{ __html: String(file) }} />;
 }
