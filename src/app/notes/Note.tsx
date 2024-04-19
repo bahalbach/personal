@@ -1,10 +1,5 @@
 import { Octokit } from "octokit";
-import rehypeStringify from "rehype-stringify";
-import remarkFrontmatter from "remark-frontmatter";
-import remarkGfm from "remark-gfm";
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
-import { unified } from "unified";
+import RenderMarkdown from "./RenderMarkdown";
 
 export default async function Note({
   content,
@@ -33,13 +28,26 @@ export default async function Note({
   // account mediaType.format=raw
   const text = res.data as unknown as string;
 
-  const file = await unified()
-    .use(remarkParse)
-    .use(remarkFrontmatter)
-    .use(remarkGfm)
-    .use(remarkRehype)
-    .use(rehypeStringify)
-    .process(text);
+  return <RenderMarkdown text={text} />;
 
-  return <div dangerouslySetInnerHTML={{ __html: String(file) }} />;
+  // const file = await unified()
+  //   .use(remarkParse)
+  //   .use(remarkFrontmatter)
+  //   .use(remarkGfm)
+  //   .use(remarkWikiLink, {
+  //     pageResolver: (pageName: string) => {
+  //       console.log(`link pageName: ${pageName}`);
+  //       return [makeCanonical(pageName)];
+  //     },
+  //     hrefTemplate: (permalink: string) => {
+  //       return `/${permalink}`;
+  //     },
+  //     aliasDivider: "|",
+  //   })
+  //   .use(remarkRehype)
+  //   .use(rehypeStringify)
+  //   .process(text);
+  // const html = String(file);
+
+  // return <div dangerouslySetInnerHTML={{ __html: html }} />;
 }

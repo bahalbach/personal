@@ -1,3 +1,3 @@
 export function makeCanonical(label: string) {
-  return label.toLowerCase().replace(" ", "%20");
+  return label.toLowerCase().replace(/ /g, "_");
 }

@@ -23,6 +23,7 @@ export default async function Page({
         !(currentFileMap.type === "directory") ||
         !currentFileMap.children.has(label)
       ) {
+        console.log("ivv", currentFileMap);
         invalidPath = path.slice(pathIndex);
         break;
       }
