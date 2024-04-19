@@ -1,9 +1,11 @@
 import { Octokit } from "octokit";
 import { makeCanonical } from "./makeCanonical";
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
 
 // function CreateFileMapDir(label, canonicalLabel);
 
-export async function getFileMap() {
+const fetchGithubTree = unstable_cache(async () => {
   const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
   const res = await octokit.request(
     "GET /repos/{owner}/{repo}/git/trees/{tree_sha}",
@@ -18,8 +20,14 @@ export async function getFileMap() {
     }
   );
   console.log("fetch tree");
+  await fetch("http://127.0.0.1:3000/api/test");
 
   const tree = res.data.tree;
+  return tree;
+});
+
+export async function getFileMap() {
+  const tree = await fetchGithubTree();
   const fileMap: FileMapDir = {
     type: "directory",
     label: "Notes",
@@ -61,11 +69,14 @@ export async function getFileMap() {
         type: "markdown",
         label: finalPart,
         canonicalLabel,
+        // @ts-ignore
         url,
+        // @ts-ignore
         sha,
       };
     }
 
+    // @ts-ignore
     currentDir.children.set(canonicalLabel, newChild);
   }
 

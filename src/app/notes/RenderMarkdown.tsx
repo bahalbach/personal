@@ -40,7 +40,7 @@ function CustomLink({
     </span>
   );
 }
-// @ts-expect-error: the react types are missing.
+
 const production = {
   Fragment: prod.Fragment,
   jsx: prod.jsx,
@@ -70,6 +70,7 @@ function useProcessor(text: string) {
             aliasDivider: "|",
           })
           .use(remarkRehype)
+          // @ts-ignore
           .use(rehypeReact, production)
           .process(text);
 

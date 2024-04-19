@@ -6,6 +6,7 @@ export async function GET(request: Request) {
   if (!url) {
     return new Response("", { status: 400 });
   }
+  console.log("api fetch", url);
   const res = await fetch(url);
   const xFrameOptions = res.headers.get("x-frame-options");
   let allowEmbedding = !xFrameOptions;

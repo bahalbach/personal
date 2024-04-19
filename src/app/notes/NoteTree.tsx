@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Note from "./Note";
 
 export default function NoteTree({
@@ -13,7 +14,7 @@ export default function NoteTree({
     return <Note active={active} content={tree} path={path} />;
   }
 
-  const link = <a href={`/${path.join("/")}`}>{tree.label}</a>;
+  const link = <Link href={`/${path.join("/")}`}>{tree.label}</Link>;
 
   if (!active) {
     return link;

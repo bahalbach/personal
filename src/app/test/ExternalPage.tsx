@@ -1,4 +1,5 @@
 "use client";
+export const fetchCache = "only-cache";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -17,7 +18,10 @@ function ExternalPage({ targetUrl }: { targetUrl: string }) {
   const ref2 = useRef<HTMLIFrameElement | null>(null);
 
   const loadUrl = useCallback(async (href: string) => {
-    const res = await fetch(`/api/fetch?url=${href}`);
+    console.log("call loadUrl");
+    const res = await fetch(`/api/fetch?url=${href}`, {
+      cache: "force-cache",
+    });
     if (!res.ok) return;
     // TODO: use tRPC here?
     const { allowEmbedding, text } = await res.json();
@@ -27,9 +31,10 @@ function ExternalPage({ targetUrl }: { targetUrl: string }) {
   }, []);
 
   useEffect(() => {
+    console.log("useEffect loadUrl");
     loadUrl(targetUrl);
   }, [targetUrl, loadUrl]);
-
+  console.log("render");
   const onClickLink = loadUrl;
 
   const origin = new URL(url).origin;
@@ -78,7 +83,7 @@ function ExternalPage({ targetUrl }: { targetUrl: string }) {
     // ref2.current!.src = blobUrl2;
 
     ref.current.addEventListener("load", () => {
-      if (!ref.current) return;
+      if (!ref.current?.contentDocument) return;
       const iframeDocument = ref.current.contentDocument;
       iframeDocument.querySelectorAll('a[href^="/').forEach((v) => {
         const a = v as HTMLAnchorElement;
