@@ -1,65 +1,70 @@
 // need a catch all route
 // get data from github
 
-import NoteTree from "../NoteTree";
-import { getFileMap } from "../getFileMap";
-import { makeCanonical } from "../makeCanonical";
+import Link from "next/link";
+import NoteTree from "../_components/NoteTree";
+import { getFileMap } from "../_utils/getFileMap";
+import { makeCanonical } from "../_utils/makeCanonical";
+import { processNotePath } from "../_utils/processNotePath";
 
-export default async function Page({}: // params: { path },
-{
-  // params: { path?: string[] };
+// non generated will be a 404
+// export const dynamicParams = false;
+// export async function generateStaticParams() {
+//   const fileMap = await getFileMap();
+//   const stack = [fileMap];
+//   const params: { path: string[] }[] = [{ path: [] }];
+//   const currentPath: string[] = [];
+//   const genFilePaths = (curFileMap: FileMapItem) => {
+//     if (curFileMap.type === "markdown") return;
+//     currentPath.push(curFileMap.canonicalLabel);
+//     params.push({ path: currentPath.slice() });
+//     curFileMap.children.forEach(genFilePaths);
+//     currentPath.pop();
+//   };
+//   genFilePaths(fileMap);
+//   console.log("gened params");
+//   return params;
+// }
+
+export default async function Page({
+  params: { path },
+}: {
+  params: { path?: string[] };
 }) {
+  console.log("render notes page", path);
   const fileMap = await getFileMap();
-  let currentFileMap: FileMapItem = fileMap;
-  const validPath: string[] = [fileMap.canonicalLabel];
-  const validPathLabels: string[] = [fileMap.label];
-  let invalidPath;
-  let label;
-  // if (path) {
-  //   for (let pathIndex = 0; pathIndex < path.length; pathIndex++) {
-  //     label = makeCanonical(path[pathIndex]);
-  //     if (
-  //       !(currentFileMap.type === "directory") ||
-  //       !currentFileMap.children.has(label)
-  //     ) {
-  //       // console.log("ivv", currentFileMap);
-  //       invalidPath = path.slice(pathIndex);
-  //       break;
-  //     }
-  //     validPath.push(label);
-  //     currentFileMap = currentFileMap.children.get(label) as FileMapItem;
-  //     validPathLabels.push(currentFileMap.label);
-  //   }
-  // }
 
-  // const nav = (
-  //   <nav>
-  //     <ul className="flex gap-4 p-4">
-  //       {validPath.map((value, pathIndex) => (
-  //         <li key={value}>
-  //           <a href={`/${validPath.slice(0, pathIndex + 1).join("/")}`}>
-  //             {validPathLabels[pathIndex]}
-  //           </a>
-  //         </li>
-  //       ))}
-  //       {invalidPath?.map((value) => (
-  //         <li className="text-red-600" key={value}>
-  //           {value}
-  //         </li>
-  //       ))}
-  //     </ul>
-  //   </nav>
-  // );
-  // const invalidPathNotice = invalidPath ? (
-  //   <div className="p-4">The path {invalidPath.join("/")} is not valid</div>
-  // ) : null;
+  const { currentFileMap, validPath, validPathLabels, invalidPath } =
+    processNotePath(path, fileMap);
+
+  const nav = (
+    <nav>
+      <ul className="flex gap-4 p-4">
+        {validPath.map((value, pathIndex) => (
+          <li key={value}>
+            <Link href={`/${validPath.slice(0, pathIndex + 1).join("/")}`}>
+              {validPathLabels[pathIndex]}
+            </Link>
+          </li>
+        ))}
+        {invalidPath?.map((value) => (
+          <li className="text-red-600" key={value}>
+            {value}
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+  const invalidPathNotice = invalidPath ? (
+    <div className="p-4">The path {invalidPath.join("/")} is not valid</div>
+  ) : null;
   const noteTree = (
     <NoteTree active={true} tree={currentFileMap} path={validPath} />
   );
   return (
     <div className="p-4">
-      {/* {nav} */}
-      {/* {invalidPathNotice} */}
+      {nav}
+      {invalidPathNotice}
       {noteTree}
     </div>
   );

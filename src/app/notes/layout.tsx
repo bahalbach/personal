@@ -1,12 +1,20 @@
 // need a catch all route
 // get data from github
-export const fetchCache = "only-cache";
-import Breadcrumbs from "./Breadcrumbs";
+
+// TODO: Should I have this?
+// export const fetchCache = "only-cache";
+
+import { Metadata } from "next";
+import Breadcrumbs from "./_components/Breadcrumbs";
 // import { FileTreeContext } from "../FileTreeContext";
-import FileTreeContextProvider from "./FileTreeContextProvider";
-import NoteTree from "./NoteTree";
-import { getFileMap } from "./getFileMap";
-import { makeCanonical } from "./makeCanonical";
+import FileTreeContextProvider from "./_contexts/FileTreeContextProvider";
+import NoteTree from "./_components/NoteTree";
+import { getFileMap } from "./_utils/getFileMap";
+import { makeCanonical } from "./_utils/makeCanonical";
+
+export const metadata: Metadata = {
+  title: "Notes",
+};
 
 export default async function Layout({
   children,

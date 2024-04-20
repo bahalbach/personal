@@ -1,7 +1,8 @@
 import parseContentSecurityPolicy from "content-security-policy-parser";
+import { NextRequest } from "next/server";
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams; // new URL(request.url);
   const url = searchParams.get("url");
   if (!url) {
     return new Response("", { status: 400 });

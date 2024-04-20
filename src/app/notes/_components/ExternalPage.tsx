@@ -11,6 +11,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
  * @returns
  */
 function ExternalPage({ targetUrl }: { targetUrl: string }) {
+  return (
+    <span className="p-2 bg-black text-white border-red-500 border">
+      External Page {targetUrl}
+    </span>
+  );
   const [url, setUrl] = useState(targetUrl);
   const [html, setHtml] = useState("");
   const [allowEmbedding, setAllowEmbedding] = useState(false);

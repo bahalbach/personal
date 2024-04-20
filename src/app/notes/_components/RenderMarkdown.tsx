@@ -11,9 +11,9 @@ import remarkWikiLink from "remark-wiki-link";
 import remarkRehype from "remark-rehype";
 import rehypeReact from "rehype-react";
 import { unified } from "unified";
-import { makeCanonical } from "./makeCanonical";
+import { makeCanonical } from "../_utils/makeCanonical";
 
-import ExternalPage from "../test/ExternalPage";
+import ExternalPage from "./ExternalPage";
 
 function CustomLink({
   children,
@@ -26,13 +26,17 @@ function CustomLink({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInternal = href.startsWith("/");
+  // TODO: need to find link using file tree
 
   return (
     <span className="link-container">
       <a href={href}>Custom! {children}</a>
       <span className="link-preview" ref={ref}>
         {isInternal ? (
-          <RenderMarkdown text="test internal link" />
+          // <RenderMarkdown text="test internal link" />
+          <span className="p-2 bg-black text-white border-blue-500 border">
+            TODO: internal link
+          </span>
         ) : (
           <ExternalPage targetUrl={href} />
         )}
@@ -84,5 +88,5 @@ function useProcessor(text: string) {
 }
 
 export default function RenderMarkdown({ text }: { text: string }) {
-  return useProcessor(text);
+  return <article className="markdown-content">{useProcessor(text)}</article>;
 }

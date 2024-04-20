@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext } from "react";
-import { FileTreeContext } from "./FileTreeContext";
+import { FileTreeContext } from "../_contexts/FileTreeContext";
 import {
   useSelectedLayoutSegment,
   useSelectedLayoutSegments,
@@ -11,7 +11,7 @@ export default function Breadcrumbs() {
   const fileMap = useContext(FileTreeContext);
   let currentFileMap: FileMapItem = fileMap;
   const segments = useSelectedLayoutSegment();
-  // can't use useSelectedLayoutSegments because using a catch all route
+
   return (
     <ul>
       <li key={"notes"}>Notes</li>
