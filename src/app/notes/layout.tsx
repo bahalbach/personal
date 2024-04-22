@@ -9,8 +9,8 @@ import Breadcrumbs from "./_components/Breadcrumbs";
 // import { FileTreeContext } from "../FileTreeContext";
 import FileTreeContextProvider from "./_contexts/FileTreeContextProvider";
 import NoteTree from "./_components/NoteTree";
-import { getFileMap } from "./_utils/getFileMap";
-import { makeCanonical } from "./_utils/makeCanonical";
+import { getNotes } from "./utils/getFileMap";
+import { makeCanonical } from "./utils/makeCanonical";
 
 export const metadata: Metadata = {
   title: "Notes",
@@ -21,7 +21,7 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const fileMap = await getFileMap();
+  const fileMap = await getNotes();
 
   return (
     <>

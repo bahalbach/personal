@@ -3,7 +3,7 @@ import RenderMarkdown from "./RenderMarkdown";
 import Link from "next/link";
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
-import { getGithubFileContent } from "../_utils/getGithubFileContent";
+import { getGithubFileContent } from "../utils/getGithubFileContent";
 
 export default async function Note({
   content,
@@ -14,6 +14,7 @@ export default async function Note({
   active: boolean;
   path: string[];
 }) {
+  // console.log("remder note", path, active);
   const link = <Link href={`/${path.join("/")}`}>{content.label}</Link>;
   if (!active) {
     return link;

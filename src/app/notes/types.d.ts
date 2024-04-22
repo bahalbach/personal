@@ -1,17 +1,32 @@
-type FileMapMd = {
-  type: "markdown";
+type FileMapBase = {
   label: string;
   canonicalLabel: string;
+  // lastUpdated: Date;
+};
+type FileMapMd = FileMapBase & {
+  type: "markdown";
   url: string;
   sha: string;
 };
-type FileMapDir = {
+type FileMapDir = FileMapBase & {
   type: "directory";
-  label: string;
-  canonicalLabel: string;
   children: Map<string, FileMapMd | FileMapDir>;
 };
 type FileMapItem = FileMapMd | FileMapDir;
 
-type FileMap = string | { [key: string]: FileMap };
-type BaseFileMap = { [key: string]: FileMap };
+type PathItem = {
+  fullPath: string;
+} & (
+  | {
+      type: "markdown";
+    }
+  | {
+      type: "directory";
+      children: Map<string, PathItem[]>;
+    }
+);
+type PathMap = {
+  type: "directory";
+  fullPath: string;
+  children: Map<string, PathItem[]>;
+};

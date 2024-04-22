@@ -3,9 +3,9 @@
 
 import Link from "next/link";
 import NoteTree from "../_components/NoteTree";
-import { getFileMap } from "../_utils/getFileMap";
-import { makeCanonical } from "../_utils/makeCanonical";
-import { processNotePath } from "../_utils/processNotePath";
+import { getNotes } from "../utils/getFileMap";
+import { makeCanonical } from "../utils/makeCanonical";
+import { processNotePath } from "../utils/processNotePath";
 
 // non generated will be a 404
 // export const dynamicParams = false;
@@ -32,7 +32,7 @@ export default async function Page({
   params: { path?: string[] };
 }) {
   console.log("render notes page", path);
-  const fileMap = await getFileMap();
+  const { fileMap } = await getNotes();
 
   const { currentFileMap, validPath, validPathLabels, invalidPath } =
     processNotePath(path, fileMap);
