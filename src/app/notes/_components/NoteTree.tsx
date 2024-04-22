@@ -51,18 +51,18 @@ export default async function NoteTree({
       .use(remarkParse)
       .use(remarkFrontmatter)
       .use(remarkGfm)
-      // .use(wikiLinkPlugin, {
-      //   pageResolver: (pageName: string) => {
-      //     const linkOptions = resolveInternalLink(pageMap, pageName);
-      //     console.log(`link pageName: ${pageName}, options: ${linkOptions}`);
-      //     // return [makeCanonical(pageName)];
-      //     return linkOptions;
-      //   },
-      //   hrefTemplate: (permalink: string) => {
-      //     return `/${permalink}`;
-      //   },
-      //   aliasDivider: "|",
-      // })
+      .use(wikiLinkPlugin, {
+        pageResolver: (pageName: string) => {
+          const linkOptions = resolveInternalLink(pageMap, pageName);
+          console.log(`link pageName: ${pageName}, options: ${linkOptions}`);
+          // return [makeCanonical(pageName)];
+          return linkOptions;
+        },
+        hrefTemplate: (permalink: string) => {
+          return `/${permalink}`;
+        },
+        aliasDivider: "|",
+      })
       .parse(text);
 
     const startContent: RootContent[] = [];
