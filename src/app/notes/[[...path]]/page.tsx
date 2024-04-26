@@ -2,7 +2,7 @@
 // get data from github
 
 import Link from "next/link";
-import NoteTree from "../_components/NoteTree";
+import NoteTree, { TopSection } from "../_components/NoteTree";
 import { getNotes } from "../utils/getFileMap";
 import { makeCanonical } from "../utils/makeCanonical";
 import { processNotePath } from "../utils/processNotePath";
@@ -58,14 +58,13 @@ export default async function Page({
   const invalidPathNotice = invalidPath ? (
     <div className="p-4">The path {invalidPath.join("/")} is not valid</div>
   ) : null;
-  const noteTree = (
-    <NoteTree active={true} tree={currentFileMap} path={validPath} />
-  );
+  // const noteTree = <NoteTree active={true} tree={currentFileMap} />;
+  const topSection = <TopSection tree={currentFileMap} />;
   return (
     <div className="p-4">
       {nav}
       {invalidPathNotice}
-      {noteTree}
+      <article className="markdown-body">{topSection}</article>
     </div>
   );
 }

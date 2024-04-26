@@ -2,6 +2,7 @@ import { Octokit } from "octokit";
 import { makeCanonical } from "./makeCanonical";
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
+import { getGithubFileContent } from "./getGithubFileContent";
 
 // function CreateFileMapDir(label, canonicalLabel);
 
@@ -26,7 +27,7 @@ const fetchGithubTree = unstable_cache(async () => {
   return tree;
 });
 
-function generateFileMap(
+async function generateFileMap(
   tree: { path?: string; type?: string; url?: string; sha?: string }[]
 ) {
   const fileMap: FileMapDir = {
@@ -34,16 +35,18 @@ function generateFileMap(
     label: "Notes",
     canonicalLabel: "notes",
     children: new Map(),
+    path: ["notes"],
   };
   treeLoop: for (let index = 0; index < tree.length; index++) {
-    const { path, type, url, sha } = tree[index];
+    const { path, type, sha } = tree[index];
     if (!path) continue;
     const isDir = type === "tree";
     const isMd = type === "blob" && path.endsWith(".md");
     if (!(isDir || isMd)) continue;
-    if (isMd && !url) continue;
+    const processedPath = isMd ? path.replace(".md", "") : path;
 
-    const parts = path.split("/");
+    const parts = processedPath.split("/");
+    const pathParts = parts.map(makeCanonical);
     let currentDir: FileMapDir = fileMap;
     for (let pathIndex = 0; pathIndex < parts.length - 1; pathIndex++) {
       const part = makeCanonical(parts[pathIndex]);
@@ -54,31 +57,49 @@ function generateFileMap(
       }
       currentDir = childItem;
     }
-    const finalPart = parts.at(-1) as string;
-    const canonicalLabel = makeCanonical(finalPart);
-    let newChild: FileMapItem;
+    const label = parts.at(-1)!;
+    const canonicalLabel = makeCanonical(label);
+    let newChild: FileMapItem | undefined;
     if (isDir) {
       newChild = {
         type: "directory",
-        label: finalPart,
+        label,
         canonicalLabel,
         children: new Map(),
+        path: pathParts,
       };
     }
     if (isMd) {
-      newChild = {
-        type: "markdown",
-        label: finalPart,
-        canonicalLabel,
-        // @ts-ignore
-        url,
-        // @ts-ignore
-        sha,
-      };
+      // check if it's an index.md file
+      // and add the content to current dir
+      if (!sha) {
+        console.error("missing sha for", path);
+        continue;
+      }
+
+      const content = await getGithubFileContent(sha, label);
+      if (["index", currentDir.canonicalLabel].includes(canonicalLabel)) {
+        if (!content) continue;
+        if (currentDir.content) {
+          console.error("duplicate content for", currentDir.label);
+          currentDir.content = currentDir.content + content;
+        } else {
+          currentDir.content = content;
+        }
+      } else {
+        newChild = {
+          type: "markdown",
+          label,
+          canonicalLabel,
+          content,
+          path: pathParts,
+        };
+      }
     }
 
-    // @ts-ignore
-    currentDir.children.set(canonicalLabel, newChild);
+    if (newChild) {
+      currentDir.children.set(canonicalLabel, newChild);
+    }
   }
   return fileMap;
 }
@@ -147,18 +168,15 @@ function createPageMap(tree: FileMapDir) {
  */
 export async function getNotes() {
   const tree = await fetchGithubTree();
-  /**
-   * the root filempa
-   */
-  const fileMap = generateFileMap(tree);
+  const fileMap = await generateFileMap(tree);
   const { pageMap, allLinks } = createPageMap(fileMap);
 
   return { fileMap, pageMap, allLinks };
 }
 
 export function resolveInternalLink(pageMap: PathMap, internalLink: string) {
-  const linkParts = `${internalLink}.md`.split("/").map(makeCanonical);
-  console.log(pageMap, internalLink, linkParts);
+  const linkParts = internalLink.split("/").map(makeCanonical);
+  // console.log(pageMap, internalLink, linkParts);
 
   let currentItems: PathItem[] = [pageMap];
 
@@ -166,7 +184,7 @@ export function resolveInternalLink(pageMap: PathMap, internalLink: string) {
     const newItems: PathItem[] = [];
     currentItems.forEach((pathItem) => {
       if (pathItem.type === "directory" && pathItem.children.has(segmant)) {
-        console.log("segmant", segmant, pathItem.children.get(segmant));
+        // console.log("segmant", segmant, pathItem.children.get(segmant));
         newItems.push(...pathItem.children.get(segmant)!);
       }
     });

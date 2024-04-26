@@ -8,7 +8,9 @@ export async function GET(request: NextRequest) {
     return new Response("", { status: 400 });
   }
   console.log("api fetch", url);
-  const res = await fetch(url);
+  const res = await fetch(url, {
+    method: "HEAD",
+  });
   const xFrameOptions = res.headers.get("x-frame-options");
   let allowEmbedding = !xFrameOptions;
 

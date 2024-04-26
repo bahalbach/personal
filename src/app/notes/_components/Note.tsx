@@ -3,24 +3,22 @@ import RenderMarkdown from "./RenderMarkdown";
 import Link from "next/link";
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
-import { getGithubFileContent } from "../utils/getGithubFileContent";
 
-export default async function Note({
+export default function Note({
   content,
   active,
-  path,
 }: {
   content: FileMapMd;
   active: boolean;
-  path: string[];
 }) {
   // console.log("remder note", path, active);
-  const link = <Link href={`/${path.join("/")}`}>{content.label}</Link>;
+  // const link = <Link href={`/${path.join("/")}`}>{content.label}</Link>;
   if (!active) {
-    return link;
+    // return link;
+    return content.label;
   }
-  const text = await getGithubFileContent(content.sha, content.label);
-
+  console.log("TODO: use context");
+  const text = "test test TODO";
   return <RenderMarkdown text={text} />;
 
   // const file = await unified()

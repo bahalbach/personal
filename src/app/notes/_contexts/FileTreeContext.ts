@@ -2,9 +2,6 @@
 
 import { createContext } from "react";
 
-export const FileTreeContext = createContext<FileMapDir>({
-  type: "directory",
-  label: "Notes",
-  canonicalLabel: "notes",
-  children: new Map(),
-});
+export const FileTreeContext = createContext<FileTreeContextValue>(
+  undefined as unknown as FileTreeContextValue
+);

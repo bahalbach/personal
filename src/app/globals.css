@@ -2,16 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-.markdown-content {
-  background-color: wheat;
+@import "markdown.css";
+
+.markdown-body {
+  /* background-color: wheat;
   color: black;
-  font-size: 16px;
+  font-size: 16px; */
 
   p {
-    margin: 16px;
+    /* margin: 16px; */
+    white-space: pre-line;
   }
 
-  pre {
+  /* pre {
     padding: 16px;
     font-family: monospace;
     margin: 16px;
@@ -20,7 +23,7 @@
     max-width: 100%;
     white-space: pre;
     overflow-x: auto;
-  }
+  } */
 }
 
 :root {

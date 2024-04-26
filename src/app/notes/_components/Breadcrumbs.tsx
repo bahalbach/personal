@@ -8,9 +8,11 @@ import {
 } from "next/navigation";
 
 export default function Breadcrumbs() {
-  const fileMap = useContext(FileTreeContext);
+  const { fileMap } = useContext(FileTreeContext);
   let currentFileMap: FileMapItem = fileMap;
   const segments = useSelectedLayoutSegment();
+
+  console.log("Breadcrumbs", segments);
 
   return (
     <ul>

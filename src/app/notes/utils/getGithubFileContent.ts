@@ -3,7 +3,7 @@ import { cache } from "react";
 import { unstable_cache } from "next/cache";
 
 export const getGithubFileContent = unstable_cache(
-  cache(async (sha: string, label: string) => {
+  async (sha: string, label: string) => {
     const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
 
     const res = await octokit.rest.git.getBlob({
@@ -20,6 +20,6 @@ export const getGithubFileContent = unstable_cache(
     // account mediaType.format=raw
     const text = res.data as unknown as string;
     return text;
-  }),
+  },
   ["github-markdown-page"]
 );
