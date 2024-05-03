@@ -2,6 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "markdown.css";
+
+.markdown-body {
+  /* background-color: wheat;
+  color: black;
+  font-size: 16px; */
+  .section-container.selected {
+    outline-width: 2px;
+    outline-offset: 5px;
+    outline-style: solid;
+    outline-color: greenyellow;
+  }
+
+  p {
+    /* margin: 16px; */
+    white-space: pre-line;
+  }
+
+  /* pre {
+    padding: 16px;
+    font-family: monospace;
+    margin: 16px;
+    background-color: black;
+    color: white;
+    max-width: 100%;
+    white-space: pre;
+    overflow-x: auto;
+  } */
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
