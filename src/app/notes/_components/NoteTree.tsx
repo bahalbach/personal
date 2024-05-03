@@ -35,6 +35,7 @@ import { FileTreeContext } from "../_contexts/FileTreeContext";
 import rehypeReact from "rehype-react";
 import ExternalPage from "./ExternalPage";
 import { processNotePath } from "../utils/processNotePath";
+import { usePathname, useRouter } from "next/navigation";
 const internalLinkToken = "internal:";
 
 function parseMarkdown(markdown: string, pageMap: PathMap) {
@@ -63,15 +64,6 @@ function parseMarkdown(markdown: string, pageMap: PathMap) {
 
 function RenderText(text: PhrasingContent[]) {
   return mdToReact(text);
-  return text.map((node) => {
-    switch (node.type) {
-      case "text":
-        return node.value;
-        break;
-      default:
-        break;
-    }
-  });
 }
 
 // function RenderMdast(mdast: Root, label: string) {
@@ -88,6 +80,7 @@ function RenderText(text: PhrasingContent[]) {
  */
 type ContentGroup = {
   heading: Heading;
+  linkedPath?: string;
   /**
    * all content after this header and before the first this+1 level header
    * in a flat array
@@ -97,15 +90,26 @@ type ContentGroup = {
    * all content after this header and before the first this+1 level header
    * gouped into ContentGroups
    */
-  content: (ContentGroup | RootContent)[];
+  baseContent: (ContentGroup | RootContent)[];
   /**
    * grouped content for each this+1 level header
    */
   childGroups: ContentGroup[];
+  /**
+   * baseContent and childGroups
+   */
+  content: (ContentGroup | RootContent)[];
   // content: (RootContent | ContentGroup)[];
 };
 function isContentGroup(obj: any): obj is ContentGroup {
-  return "level" in obj && "content" in obj && Array.isArray(obj.content);
+  return (
+    typeof obj === "object" &&
+    "heading" in obj &&
+    "content" in obj &&
+    Array.isArray(obj.content) &&
+    "childGroups" in obj &&
+    Array.isArray(obj.childGroups)
+  );
 }
 
 //  just make custom header and link components instead of custom everything...
@@ -115,9 +119,10 @@ const LinkCatchingContext = createContext<((link: string) => void) | undefined>(
 );
 const CurrentPathContext = createContext<string[]>([]);
 
-function RenderHeading(header: Heading) {
+function RenderHeading(header: Heading, adjustHeadings: boolean) {
   const text = RenderText(header.children);
-  switch (header.depth) {
+  const depth = header.depth + (adjustHeadings ? 1 : 0);
+  switch (depth) {
     case 1:
       return <h1>{text}</h1>;
     case 2:
@@ -129,6 +134,7 @@ function RenderHeading(header: Heading) {
     case 5:
       return <h5>{text}</h5>;
     case 6:
+    default:
       return <h6>{text}</h6>;
   }
 }
@@ -138,14 +144,18 @@ function RenderHeading(header: Heading) {
  * @param content
  * @returns
  */
-function simpleRenderContent(content: (ContentGroup | RootContent)[]) {
+function simpleRenderContent(
+  content: (ContentGroup | RootContent)[],
+  adjustHeadings: boolean = false
+) {
   return content.map((child, index) => {
     if (isContentGroup(child)) {
-      <Fragment key={`${index}`}>
-        {RenderHeading(child.heading)}
-        {simpleRenderContent(child.content)}
-        {simpleRenderContent(child.childGroups)}
-      </Fragment>;
+      return (
+        <Section key={index} cg={child} adjustHeadings={adjustHeadings} />
+        // {/* {RenderHeading(child.heading, adjustHeadings)}
+        // {simpleRenderContent(child.content, adjustHeadings)} */}
+        // {/* {simpleRenderContent(child.childGroups, adjustHeadings)} */}
+      );
     } else {
       return <Fragment key={index}>{mdToReact([child])}</Fragment>;
     }
@@ -156,9 +166,11 @@ function getContent(tree: FileMapItem, pageMap: PathMap) {
   const { type, label, content } = tree;
   const headerText = tree.label;
   let contentGroup;
+  let allContent;
   if (content) {
     const mdast = parseMarkdown(content, pageMap);
-    contentGroup = groupContent(label, mdast.children);
+    allContent = mdast.children;
+    contentGroup = groupContent(label, allContent);
   }
   const directoryChildren =
     type === "directory" ? [...tree.children.values()] : [];
@@ -166,111 +178,136 @@ function getContent(tree: FileMapItem, pageMap: PathMap) {
     headerText,
     content: contentGroup?.content ?? [],
     childGroups: contentGroup?.childGroups ?? [],
+    contentGroup,
+    allContent,
     directoryChildren,
   };
 }
 
-export function TopSection({ tree }: { tree: FileMapItem }) {
-  const { pageMap } = useContext(FileTreeContext);
-  const { headerText, content, childGroups, directoryChildren } = getContent(
-    tree,
-    pageMap
+function LinkableSection({
+  selected,
+  children,
+  label,
+}: {
+  selected: boolean;
+  children: React.ReactNode;
+  label: string;
+}) {
+  const router = useRouter();
+  const currentPath = usePathname();
+
+  return (
+    <div
+      className={`section-container ${selected ? "selected" : ""}`}
+      onClick={() => {
+        router.push(`${currentPath}/${label}`);
+      }}
+    >
+      {children}
+    </div>
   );
+}
+
+function getLinkedContent(link: string, fileMap: FileMapDir, pageMap: PathMap) {
+  const { currentFileMap } = processNotePath(link.split("/").slice(2), fileMap);
+  return getContent(currentFileMap, pageMap);
+}
+
+export function TopSection({
+  tree,
+  path,
+}: {
+  tree: FileMapItem;
+  path?: string[];
+}) {
+  const { pageMap, fileMap } = useContext(FileTreeContext);
+  let { content, childGroups, allContent, directoryChildren, contentGroup } =
+    getContent(tree, pageMap);
+  const [selected, setSelected] = useState(0);
+  let headerText: React.ReactNode = tree.label;
+  const sections: React.ReactNode[] = [];
+
+  sections.push(simpleRenderContent(content));
+
+  // TODO: uncomment to work on routing to markdown headings
+  // if (contentGroup !== undefined) {
+  //   for (let index = 0; index < (path?.length ?? 0); index++) {
+  //     const i = parseInt(path![index], 10);
+  //     if (i === 0) {
+  //       break;
+  //       // sections.push({
+  //       //   label: 0,
+  //       //   content: simpleRenderContent(contentGroup.content),
+  //       // });
+  //     } else if (i > 0 && i <= contentGroup.childGroups.length) {
+  //       contentGroup = contentGroup.childGroups[i - 1];
+  //     }
+  //   }
+  //   headerText = RenderText(contentGroup.heading.children)
+  //   sections.push({
+  //     label: 0,
+  //     content: simpleRenderContent(contentGroup.content),
+  //   });
+  //   if (contentGroup.linkedPath) {
+  //     const { } = getLinkedContent(contentGroup.linkedPath, fileMap, pageMap)
+  //   }
+  // }
+  // if (path === undefined) {
+  //   childGroups.forEach((cg, i) => {
+  //     sections.push({
+  //       label: i + 1,
+  //       content: <Section cg={cg} />,
+  //     })
+  //   }
+  //   );
+  directoryChildren.forEach((node, i) =>
+    sections.push(<Preview key={i} tree={node} />)
+  );
+  // }
+
   return (
     <>
       {<h1>{headerText}</h1>}
-      {simpleRenderContent(content)}
-      {childGroups.map((cg, i) => (
-        <Section key={i} cg={cg} />
-      ))}
-      {directoryChildren.map((node, i) => (
-        <Preview key={i} tree={node} />
-      ))}
+      {sections}
     </>
   );
 }
 
 function Preview({ tree }: { tree: FileMapItem }) {
+  const router = useRouter();
+  const currentPath = usePathname();
   const { pageMap } = useContext(FileTreeContext);
-  const { headerText, content, childGroups, directoryChildren } = getContent(
-    tree,
-    pageMap
-  );
-
-  const topLevelChildren = childGroups.map((cg, index) =>
-    RenderHeading(cg.heading)
-  );
+  const { headerText, content, directoryChildren } = getContent(tree, pageMap);
+  const topLevelContent = simpleRenderContent(content, true);
   return (
-    <>
+    <div
+      onClick={() => {
+        router.push(`${currentPath}/${tree.canonicalLabel}`);
+      }}
+      className="max-h-48 overflow-auto border border-orange-500 px-4 my-8 mx-4"
+    >
       <h2>{headerText}</h2>
-      {simpleRenderContent(content)}
-      {topLevelChildren}
+      {topLevelContent}
       {directoryChildren.map((node, i) => (
         <h3 key={i}>{node.label}</h3>
       ))}
-    </>
+    </div>
   );
 }
 
-function Section({ cg }: { cg: ContentGroup }) {
-  const { fileMap, pageMap } = useContext(FileTreeContext);
-  const [headerLink, setHeaderLink] = useState<string | null>(null);
-  const catchLink = useCallback(
-    (link: string) => {
-      if (headerLink === null) {
-        setHeaderLink(link);
-      }
-    },
-    [headerLink]
-  );
-  const headerText = RenderHeading(cg.heading);
-  const header = (
-    <LinkCatchingContext.Provider value={catchLink}>
-      {headerText}
-    </LinkCatchingContext.Provider>
-  );
-
-  const renderedContent = simpleRenderContent(cg.content);
-
-  const {
-    content: linkedContent,
-    childGroups: linkedChildGroups,
-    directoryChildren: linkedDirectoryChildren,
-  } = useMemo(() => {
-    if (headerLink === null)
-      return {
-        content: [],
-        childGroups: [],
-        directoryChildren: [],
-      };
-    const { currentFileMap } = processNotePath(
-      headerLink?.split("/").slice(2),
-      fileMap
-    );
-    return getContent(currentFileMap, pageMap);
-  }, [headerLink, fileMap, pageMap]);
-
-  // if (headerLink)
-  //   console.log(
-  //     "got header link",
-  //     headerLink,
-  //     headerLink?.split("/").slice(2),
-  //     currentFileMap,
-  //     validPath,
-  //     invalidPath
-  //   );
-  const childGroupHeaders = [...cg.childGroups, ...linkedChildGroups].map(
-    (childGroup) => {
-      return RenderHeading(childGroup.heading);
-    }
-  );
+function Section({
+  cg,
+  adjustHeadings,
+}: {
+  cg: ContentGroup;
+  adjustHeadings: boolean;
+}) {
+  const heading = RenderHeading(cg.heading, adjustHeadings);
+  if (cg.content.length === 0) return heading;
   return (
-    <details>
-      <summary>{header}</summary>
-      {renderedContent}
-      {/* TODO, adjust heading levels */}
-      {simpleRenderContent(linkedContent)}
-      {childGroupHeaders}
+    <details open>
+      <summary>{heading}</summary>
+      {simpleRenderContent(cg.content, adjustHeadings)}
     </details>
   );
 }
@@ -281,18 +318,18 @@ function isIncludeInternalLink(content: PhrasingContent[]) {
   });
 }
 
-function RenderContentGroup(cg: ContentGroup) {
-  const renderedContent = mdToReact(cg.baseContent);
-  const childGroups = cg.childGroups.map((childGroup) => {
-    return RenderContentGroup(childGroup);
-  });
+// function RenderContentGroup(cg: ContentGroup) {
+//   const renderedContent = mdToReact(cg.);
+//   const childGroups = cg.childGroups.map((childGroup) => {
+//     return RenderContentGroup(childGroup);
+//   });
 
-  const header = RenderHeading(cg.heading);
+//   const header = RenderHeading(cg.heading);
 
-  return (
-    <Section header={header} content={[renderedContent, ...childGroups]} />
-  );
-}
+//   return (
+//     <Section header={header} content={[renderedContent, ...childGroups]} />
+//   );
+// }
 
 // type ContentGroup = {
 //   heading?: Heading;
@@ -334,6 +371,24 @@ function RenderContentGroup(cg: ContentGroup) {
 //   return contentGroups;
 // }
 
+function getHeaderLinkedContent(children: PhrasingContent[]): string | null {
+  for (let index = 0; index < children.length; index++) {
+    const child = children[index];
+    if (child.type === "link") {
+      if (child.url.startsWith(internalLinkToken)) {
+        return child.url;
+      }
+    }
+    if ("children" in child) {
+      const linkedContent = getHeaderLinkedContent(child.children);
+      if (linkedContent) {
+        return linkedContent;
+      }
+    }
+  }
+  return null;
+}
+
 function groupContent(label: string, content: RootContent[]) {
   const level1Content: ContentGroup = {
     heading: {
@@ -347,8 +402,9 @@ function groupContent(label: string, content: RootContent[]) {
       ],
     },
     // flatContent: [],
-    content: [],
+    baseContent: [],
     childGroups: [],
+    content: [],
   };
   const contentGroups = [level1Content];
   for (let index = 0; index < content.length; index++) {
@@ -363,22 +419,29 @@ function groupContent(label: string, content: RootContent[]) {
       while (contentGroups.at(-1)!.heading.depth >= element.depth) {
         contentGroups.pop();
       }
-      const newGroup = {
+
+      const newGroup: ContentGroup = {
         heading: element,
-        content: [],
-        // flatContent: [],
+        baseContent: [],
         childGroups: [],
+        content: [],
       };
+      const linkedContent = getHeaderLinkedContent(element.children);
+      if (linkedContent) {
+        newGroup.linkedPath = linkedContent;
+      }
+      contentGroups.at(-1)?.content.push(newGroup);
       // add this group as child group of the higher level heading
       if (contentGroups.at(-1)!.heading.depth === element.depth - 1) {
         contentGroups.at(-1)?.childGroups.push(newGroup);
       } else {
-        contentGroups.at(-1)?.content.push(newGroup);
+        contentGroups.at(-1)?.baseContent.push(newGroup);
       }
 
       // add this group to the end of the heading stack
       contentGroups.push(newGroup);
     } else {
+      contentGroups.at(-1)?.baseContent.push(element);
       contentGroups.at(-1)!.content.push(element);
     }
   }
@@ -499,12 +562,12 @@ export default function NoteTree({
   console.log("render notetree", tree);
 
   let topLevelText = null;
-  if (content) {
-    const mdast = parseMarkdown(content, pageMap);
-    const contentGroup = groupContent(label, mdast.children);
+  // if (content) {
+  //   const mdast = parseMarkdown(content, pageMap);
+  //   const contentGroup = groupContent(label, mdast.children);
 
-    topLevelText = RenderContentGroup(contentGroup);
-  }
+  //   topLevelText = RenderContentGroup(contentGroup);
+  // }
   const topLevelHeadings = [];
 
   const treeNodes = [];
