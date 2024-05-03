@@ -37,3 +37,31 @@ type FileTreeContextValue = {
   pageMap: PathMap;
   allLinks: string[];
 };
+
+/**
+ * grouped content for all content following this header
+ * but before the next this level header
+ */
+type ContentGroup = {
+  heading: Heading;
+  linkedPath?: string;
+  /**
+   * all content after this header and before the first this+1 level header
+   * in a flat array
+   */
+  // flatContent: RootContent[];
+  /**
+   * all content after this header and before the first this+1 level header
+   * gouped into ContentGroups
+   */
+  baseContent: (ContentGroup | RootContent)[];
+  /**
+   * grouped content for each this+1 level header
+   */
+  childGroups: ContentGroup[];
+  /**
+   * baseContent and childGroups
+   */
+  content: (ContentGroup | RootContent)[];
+  // content: (RootContent | ContentGroup)[];
+};
