@@ -6,25 +6,27 @@ import { getGithubFileContent } from "./getGithubFileContent";
 
 // function CreateFileMapDir(label, canonicalLabel);
 
-const fetchGithubTree = unstable_cache(async () => {
-  const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
-  const res = await octokit.request(
-    "GET /repos/{owner}/{repo}/git/trees/{tree_sha}",
-    {
-      owner: "bahalbach",
-      repo: "notes",
-      tree_sha: "main",
-      recursive: "true",
-      headers: {
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
-    }
-  );
-  console.log("fetch tree");
+const fetchGithubTree = cache(
+  unstable_cache(async () => {
+    const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
+    const res = await octokit.request(
+      "GET /repos/{owner}/{repo}/git/trees/{tree_sha}",
+      {
+        owner: "bahalbach",
+        repo: "notes",
+        tree_sha: "main",
+        recursive: "true",
+        headers: {
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      }
+    );
+    console.log("fetch tree");
 
-  const tree = res.data.tree;
-  return tree;
-});
+    const tree = res.data.tree;
+    return tree;
+  })
+);
 
 async function generateFileMap(
   tree: { path?: string; type?: string; url?: string; sha?: string }[]
