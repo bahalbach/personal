@@ -21,7 +21,6 @@ const fetchGithubTree = unstable_cache(async () => {
     }
   );
   console.log("fetch tree");
-  await fetch("http://127.0.0.1:3000/api/test");
 
   const tree = res.data.tree;
   return tree;
