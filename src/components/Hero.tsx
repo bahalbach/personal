@@ -9,12 +9,10 @@ export default function Hero() {
       {/* Text container */}
 
       <div className="flex flex-col text-center gap-2 md:gap-4 md:p-10">
-        <h1 className="text-4xl md:text-8xl font-bold text-gray-700 dark:text-gray-200 my-2">
+        <h1 className="text-4xl md:text-8xl font-bold text-title my-2">
           {userData.name}
         </h1>
-        <h2 className="text-4xl text-gray-700 dark:text-gray-200 my-2">
-          {userData.designation}
-        </h2>
+        <h2 className="text-4xl text-subtitle my-2">{userData.designation}</h2>
         <KeyButtons />
       </div>
       {/* Image container */}

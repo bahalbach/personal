@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { cookies } from "next/headers";
 import { Analytics } from "@vercel/analytics/react";
+import ThemeContextProvider from "@/components/ThemeContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,11 +25,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Analytics />
-        <Navbar />
-        <main className="bg-gray-200  dark:bg-gray-900 flex flex-col min-h-screen flex-auto items-stretch pb-10">
-          {children}
-        </main>
-        <Footer />
+        <ThemeContextProvider value={null}>
+          <Navbar />
+          <main className="bg-background flex flex-col min-h-screen flex-auto items-stretch pb-10">
+            {children}
+          </main>
+          <Footer />
+        </ThemeContextProvider>
       </body>
     </html>
   );

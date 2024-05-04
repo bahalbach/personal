@@ -11,10 +11,10 @@ export default function Navbar() {
 
         <div className="flex flex-col">
           <Link href="/">
-            <h1 className="font-semibold text-xl dark:text-gray-100">
+            <h1 className="font-semibold text-xl text-title">
               {userData.name}
             </h1>
-            <p className="text-base font-light text-gray-500 dark:text-gray-300">
+            <p className="text-base font-light text-subtitle">
               {userData.designation}
             </p>
           </Link>
@@ -53,7 +53,7 @@ export default function Navbar() {
           </a> */}
           <a
             href={userData.socialLinks.github}
-            className="text-base font-normal text-gray-600 dark:text-gray-300"
+            className="text-base font-normal text-icon"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +68,7 @@ export default function Navbar() {
           </a>
           <a
             href={userData.socialLinks.linkedin}
-            className="text-base font-normal text-gray-600 dark:text-gray-300"
+            className="text-base font-normal text-icon"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

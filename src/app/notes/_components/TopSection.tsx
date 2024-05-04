@@ -166,7 +166,7 @@ function Preview({ tree }: { tree: FileMapItem }) {
       onClick={() => {
         router.push(`${currentPath}/${tree.canonicalLabel}`);
       }}
-      className="max-h-48 overflow-auto border border-orange-500 px-4 my-8 mx-4"
+      className="max-h-48 overflow-auto border border-secondary px-4 my-8 mx-4"
     >
       <h2>{headerText}</h2>
       {topLevelContent}

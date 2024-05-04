@@ -5,10 +5,10 @@ import userData from "../constants/data";
 
 export default function FavoriteProjects() {
   return (
-    <div className="bg-gray-200  dark:bg-gray-900">
+    <div className="bg-card">
       <div className="max-w-6xl mx-auto">
         {/* <header className="flex flex-col md:flex-row justify-between items-center  mx-10 md:my-20 lg:my-0"> */}
-        <h1 className="text-6xl lg:text-9xl max-w-lg font-bold text-gray-500 py-5 dark:text-gray-500 text-center">
+        <h1 className="text-6xl lg:text-9xl max-w-lg font-bold text-headerText py-5  text-center">
           Favorite Project
         </h1>
         {/* <Link href="/projects">
@@ -46,7 +46,7 @@ export default function FavoriteProjects() {
                 alt={userData.majorProjects[0].name}
                 className="transform hover:scale-125 transition duration-1000 ease-out"
               />
-              <h1 className="absolute top-10 left-5 sm:left-10 text-gray-50 font-bold text-lg sm:text-xl bg-red-500 rounded-md px-2">
+              <h1 className="absolute top-10 left-5 sm:left-10 text-midText font-bold text-lg sm:text-xl bg-secondary rounded-md px-2">
                 {userData.majorProjects[0].name}
               </h1>
             </div>

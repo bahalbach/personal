@@ -50,7 +50,7 @@ function CustomLink({
       <span className="link-preview" ref={ref}>
         {isInternal ? (
           // <RenderMarkdown text="test internal link" />
-          <span className="p-2 bg-black text-white border-blue-500 border">
+          <span className="p-2 bg-black text-white border-theme border">
             TODO: internal link
           </span>
         ) : (

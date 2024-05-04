@@ -12,7 +12,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
  */
 function ExternalPage({ targetUrl }: { targetUrl: string }) {
   return (
-    <span className="p-2 bg-black text-white border-red-500 border">
+    <span className="p-2 bg-black text-body border-error border">
       External Page {targetUrl}
     </span>
   );

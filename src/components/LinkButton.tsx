@@ -14,7 +14,7 @@ export default function LinkButton({
 }) {
   return (
     <button
-      className={`flex items-center gap-2 ${text_size} text-white  my-2 border border-blue-500 px-4 py-2 bg-blue-500 hover:bg-blue-700`}
+      className={`flex items-center gap-2 ${text_size} text-white  my-2 border border-theme px-4 py-2 bg-theme hover:bg-themeDark`}
     >
       {icon}
       <a href={href} target="_blank" rel="noopener noreferrer">

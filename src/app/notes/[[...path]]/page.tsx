@@ -51,7 +51,7 @@ export default async function Page({
           </li>
         ))}
         {invalidPath?.map((value) => (
-          <li className="text-red-600" key={value}>
+          <li className="text-error" key={value}>
             {value}
           </li>
         ))}
