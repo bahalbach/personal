@@ -39,7 +39,7 @@
   --white: white;
   --gray-1: rgb(243, 244, 246);
   --gray-2: rgb(229, 231, 235);
-  --gray-3: rgb(229, 231, 235);
+  --gray-3: rgb(209, 213, 219);
   --gray-4: rgb(229, 231, 235);
   --gray-5: rgb(107, 114, 128);
   --gray-6: rgb(229, 231, 235);
@@ -72,10 +72,22 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-:root.dark {
+[data-theme="dark"] {
   --opacity-light: 0;
   --opacity-dark: 1;
+
+  /* responsive colors */
   --background-color: var(--gray-10);
+  --card-color: var(--gray-8);
+  --icon-color: var(--gray-3);
+  --separator-color: var(--gray-8);
+  --body-text-color: var(--gray-3);
+  --standout-text-color: var(--gray-3);
+  --mid-text-color: var(--gray-2);
+  --header-text-color: var(--gray-5);
+  --subtitle-text-color: var(--gray-3);
+  --title-text-color: var(--gray-1);
+
   --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 0, 0, 0;
   --background-end-rgb: 0, 0, 0;

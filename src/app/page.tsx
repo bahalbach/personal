@@ -22,11 +22,11 @@ const Home: NextPage = () => {
       <div className="max-w-6xl mx-auto p-5 sm:p-10">
         {/* contact methods */}
         <div className="flex flex-col gap-4">
-          <div className="flex flex-row items-center gap-4 rounded-md border hover:border-theme p-5 text-sm bg-card text-midText">
+          <div className="flex flex-row items-center gap-4 rounded-md border hover:border-theme p-5 text-sm bg-background text-midText">
             <MdEmail />
             <span>{userData.contact.email}</span>
           </div>
-          <div className="flex flex-row items-center gap-4 rounded-md border hover:border-theme p-5 text-sm bg-card text-midText">
+          <div className="flex flex-row items-center gap-4 rounded-md border hover:border-theme p-5 text-sm bg-background text-midText">
             <AiFillPhone />
             <span>{userData.contact.phone}</span>
           </div>

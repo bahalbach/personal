@@ -1,26 +1,17 @@
 "use client";
 
-function toggleTheme() {
-  const root = document.querySelector(":root")!;
-  let oldTheme = "light";
-  let newTheme = "dark";
-  if (root.classList.contains("dark")) {
-    oldTheme = "dark";
-    newTheme = "light";
-  }
-  root.classList.replace(oldTheme, newTheme);
-  try {
-    localStorage.setItem("theme", newTheme);
-  } catch {}
-}
+import { useTheme } from "next-themes";
 
 export default function ThemeToggle() {
+  const { resolvedTheme, setTheme } = useTheme();
   return (
     <button
       aria-label="Toggle Dark Mode"
       type="button"
       className="w-10 h-10 p-3 rounded focus:outline-none"
-      onClick={() => toggleTheme()}
+      onClick={() =>
+        resolvedTheme === "light" ? setTheme("dark") : setTheme("light")
+      }
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

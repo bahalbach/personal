@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Head from "next/head";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { cookies } from "next/headers";
 import { Analytics } from "@vercel/analytics/react";
-import ThemeContextProvider from "@/components/ThemeContext";
+import { ThemeProvider } from "next-themes";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,18 +18,17 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const theme = cookies().get("theme");
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <Analytics />
-        <ThemeContextProvider value={null}>
+        <ThemeProvider>
           <Navbar />
           <main className="bg-background flex flex-col min-h-screen flex-auto items-stretch pb-10">
             {children}
           </main>
           <Footer />
-        </ThemeContextProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
