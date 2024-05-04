@@ -67,14 +67,14 @@ export default function Projects() {
               className="flex flex-col md:flex-row md:items-center py-10 sm:mx-5 shadow-xl rounded-md bg-card my-10"
               key={name}
             >
-              <div className="w-full md:w-1/2  relative px-5">
+              <div className="w-full md:w-1/2  relative px-5 overflow-hidden">
                 <a href={href}>
                   <Image
                     src={photo}
                     alt={name}
                     width={516}
                     height={250}
-                    className="w-full"
+                    className="w-full hover:scale-110 transition-transform duration-1000 ease-in"
                   />
                 </a>
               </div>
