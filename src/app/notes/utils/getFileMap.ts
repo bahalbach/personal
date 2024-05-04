@@ -3,11 +3,29 @@ import { makeCanonical } from "./makeCanonical";
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import { getGithubFileContent } from "./getGithubFileContent";
+import { promises as fs } from "fs";
 
 // function CreateFileMapDir(label, canonicalLabel);
+const filepath = process.cwd() + "/github_files/tree.json";
+// // readFile()
+// readdir(folder);
+
+type GithubTree = {
+  path?: string | undefined;
+  mode?: string | undefined;
+  type?: string | undefined;
+  sha?: string | undefined;
+  size?: number | undefined;
+  url?: string | undefined;
+}[];
 
 const fetchGithubTree = cache(
   unstable_cache(async () => {
+    try {
+      const fileContent = await fs.readFile(filepath, "utf8");
+      const tree: GithubTree = JSON.parse(fileContent);
+      return tree;
+    } catch {}
     const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
     const res = await octokit.request(
       "GET /repos/{owner}/{repo}/git/trees/{tree_sha}",
@@ -24,6 +42,12 @@ const fetchGithubTree = cache(
     console.log("fetch tree");
 
     const tree = res.data.tree;
+
+    try {
+      const fileContent = JSON.stringify(tree);
+      await fs.writeFile(filepath, fileContent, "utf8");
+    } catch {}
+
     return tree;
   })
 );
@@ -173,23 +197,4 @@ export async function getNotes() {
   const { pageMap, allLinks } = createPageMap(fileMap);
 
   return { fileMap, pageMap, allLinks };
-}
-
-export function resolveInternalLink(pageMap: PathMap, internalLink: string) {
-  const linkParts = internalLink.split("/").map(makeCanonical);
-  // console.log(pageMap, internalLink, linkParts);
-
-  let currentItems: PathItem[] = [pageMap];
-
-  linkParts.forEach((segmant) => {
-    const newItems: PathItem[] = [];
-    currentItems.forEach((pathItem) => {
-      if (pathItem.type === "directory" && pathItem.children.has(segmant)) {
-        // console.log("segmant", segmant, pathItem.children.get(segmant));
-        newItems.push(...pathItem.children.get(segmant)!);
-      }
-    });
-    currentItems = newItems;
-  });
-  return currentItems.map((item) => item.fullPath);
 }

@@ -3,7 +3,7 @@ import remarkParse from "remark-parse";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import wikiLinkPlugin from "remark-wiki-link";
-import { resolveInternalLink } from "../utils/getFileMap";
+import { resolveInternalLink } from "../utils/resolveInternalLink";
 
 import { internalLinkToken } from "../constants";
 
