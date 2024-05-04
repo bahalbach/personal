@@ -18,7 +18,7 @@ function ProjectBody({
 }) {
   return (
     <React.Fragment>
-      <div className="flex flex-row items-center flex-auto justify-evenly">
+      <div className="flex flex-row items-center flex-auto justify-evenly flex-wrap gap-2">
         <LinkButton
           href={href}
           text="See in action"
