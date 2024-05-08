@@ -5,7 +5,7 @@ import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   return (
-    <div className="max-w-6xl bg-card mx-auto px-4 py-10 md:py-20">
+    <div className="navbar max-w-6xl bg-card px-4 py-10 md:py-20">
       <div className="flex  md:flex-row justify-between items-center flex-auto">
         {/* Logo / Home / Text */}
 

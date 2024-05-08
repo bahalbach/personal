@@ -28,7 +28,7 @@ export default async function Layout({
       {/* <FileTreeContext.Provider value={fileMap}> */}
       <FileTreeContextProvider value={fileMap}>
         <div className="p-4">
-          <Breadcrumbs />
+          {/* <Breadcrumbs /> */}
           {children}
         </div>
       </FileTreeContextProvider>
