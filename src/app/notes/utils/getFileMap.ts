@@ -53,6 +53,9 @@ async function generateFileMap(
     let currentDir: FileMapDir = fileMap;
     for (let pathIndex = 0; pathIndex < parts.length - 1; pathIndex++) {
       const part = makeCanonical(parts[pathIndex]);
+      // don't include private folders
+      if (part.at(0) === "_") continue treeLoop;
+
       const childItem = currentDir.children.get(part);
       if (!(childItem?.type === "directory")) {
         console.error("path failure at", part, fileMap, path);
@@ -62,6 +65,9 @@ async function generateFileMap(
     }
     const label = parts.at(-1)!;
     const canonicalLabel = makeCanonical(label);
+    // don't include private files/folders
+    if (canonicalLabel.at(0) === "_") continue treeLoop;
+
     let newChild: FileMapItem | undefined;
     if (isDir) {
       newChild = {
