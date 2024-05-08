@@ -22,11 +22,13 @@ export default function RootLayout({
   return (
     <ViewTransitions>
       <html lang="en" suppressHydrationWarning>
-        <body className={`${inter.className} min-h-screen flex flex-col `}>
+        <body
+          className={`${inter.className} bg-background min-h-screen flex flex-col `}
+        >
           <Analytics />
           <ThemeProvider>
             <Navbar />
-            <main className="bg-background flex flex-col  flex-auto items-stretch pb-10">
+            <main className=" flex flex-col w-full max-w-6xl mx-auto flex-auto items-stretch pb-10">
               {children}
             </main>
             <Footer />
