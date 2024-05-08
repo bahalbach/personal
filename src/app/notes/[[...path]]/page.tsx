@@ -12,20 +12,21 @@ import TopSection from "../_components/TopSection";
 // export const dynamicParams = false;
 export async function generateStaticParams() {
   const { fileMap } = await getNotes();
-  const stack = [fileMap];
+  // const stack = [fileMap];
   const params: { path: string[] }[] = [{ path: [] }];
   const currentPath: string[] = [];
   if (process.env.NODE_ENV !== "development") {
     const genFilePaths = (curFileMap: FileMapItem) => {
-      if (curFileMap.type === "markdown") return;
+      // if (curFileMap.type === "markdown") return;
       currentPath.push(curFileMap.canonicalLabel);
       params.push({ path: currentPath.slice() });
-      curFileMap.children.forEach(genFilePaths);
+      if (curFileMap.type !== "markdown")
+        curFileMap.children.forEach(genFilePaths);
       currentPath.pop();
     };
     genFilePaths(fileMap);
 
-    console.log("gened params");
+    console.log("gened params", params.length, params);
   }
   return params;
 }
