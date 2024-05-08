@@ -11,19 +11,22 @@ import TopSection from "../_components/TopSection";
 // non generated will be a 404
 // export const dynamicParams = false;
 export async function generateStaticParams() {
-  // const fileMap = await getFileMap();
-  // const stack = [fileMap];
+  const { fileMap } = await getNotes();
+  const stack = [fileMap];
   const params: { path: string[] }[] = [{ path: [] }];
-  // const currentPath: string[] = [];
-  // const genFilePaths = (curFileMap: FileMapItem) => {
-  //   if (curFileMap.type === "markdown") return;
-  //   currentPath.push(curFileMap.canonicalLabel);
-  //   params.push({ path: currentPath.slice() });
-  //   curFileMap.children.forEach(genFilePaths);
-  //   currentPath.pop();
-  // };
-  // genFilePaths(fileMap);
-  console.log("gened params");
+  const currentPath: string[] = [];
+  if (process.env.NODE_ENV !== "development") {
+    const genFilePaths = (curFileMap: FileMapItem) => {
+      if (curFileMap.type === "markdown") return;
+      currentPath.push(curFileMap.canonicalLabel);
+      params.push({ path: currentPath.slice() });
+      curFileMap.children.forEach(genFilePaths);
+      currentPath.pop();
+    };
+    genFilePaths(fileMap);
+
+    console.log("gened params");
+  }
   return params;
 }
 
