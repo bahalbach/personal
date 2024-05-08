@@ -3,52 +3,30 @@ import { makeCanonical } from "./makeCanonical";
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import { getGithubFileContent } from "./getGithubFileContent";
-import { promises as fs } from "fs";
-
-// function CreateFileMapDir(label, canonicalLabel);
-const filepath = process.cwd() + "/github_files/tree.json";
-// // readFile()
-// readdir(folder);
-
-type GithubTree = {
-  path?: string | undefined;
-  mode?: string | undefined;
-  type?: string | undefined;
-  sha?: string | undefined;
-  size?: number | undefined;
-  url?: string | undefined;
-}[];
+import { local_cache } from "./local_cache";
 
 const fetchGithubTree = cache(
   unstable_cache(async () => {
-    try {
-      const fileContent = await fs.readFile(filepath, "utf8");
-      const tree: GithubTree = JSON.parse(fileContent);
+    const getter = async () => {
+      const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
+      const res = await octokit.request(
+        "GET /repos/{owner}/{repo}/git/trees/{tree_sha}",
+        {
+          owner: "bahalbach",
+          repo: "notes",
+          tree_sha: "main",
+          recursive: "true",
+          headers: {
+            "X-GitHub-Api-Version": "2022-11-28",
+          },
+        }
+      );
+      console.log("fetch tree");
+
+      const tree = res.data.tree;
       return tree;
-    } catch {}
-    const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
-    const res = await octokit.request(
-      "GET /repos/{owner}/{repo}/git/trees/{tree_sha}",
-      {
-        owner: "bahalbach",
-        repo: "notes",
-        tree_sha: "main",
-        recursive: "true",
-        headers: {
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      }
-    );
-    console.log("fetch tree");
-
-    const tree = res.data.tree;
-
-    try {
-      const fileContent = JSON.stringify(tree);
-      await fs.writeFile(filepath, fileContent, "utf8");
-    } catch {}
-
-    return tree;
+    };
+    return local_cache("tree", getter);
   })
 );
 
