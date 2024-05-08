@@ -1,22 +1,12 @@
 "use client";
 
-import type { Heading, PhrasingContent, RootContent } from "mdast";
-import {
-  createContext,
-  useContext,
-  useState,
-  Fragment,
-  useRef,
-  MutableRefObject,
-  RefObject,
-} from "react";
+import type { Heading, RootContent } from "mdast";
+import { useContext, Fragment, useRef } from "react";
 import { FileTreeContext } from "../_contexts/FileTreeContext";
 import { processNotePath } from "../utils/processNotePath";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { mdToReact } from "../utils/mdToReact";
 import { getContent } from "../utils/getContent";
-import { flushSync } from "react-dom";
-import { motion } from "framer-motion";
 import { Link } from "next-view-transitions";
 
 export default function TopSection({
@@ -29,78 +19,26 @@ export default function TopSection({
   const { pageMap, fileMap } = useContext(FileTreeContext);
   let { content, childGroups, allContent, directoryChildren, contentGroup } =
     getContent(tree, pageMap);
-  const [selected, setSelected] = useState(0);
   const headerText = tree.label;
   const sections: React.ReactNode[] = [];
-  const mainHeadingRef = useRef<HTMLHeadingElement>(null);
 
   sections.push(simpleRenderContent(content));
 
-  // TODO: uncomment to work on routing to markdown headings
-  // if (contentGroup !== undefined) {
-  //   for (let index = 0; index < (path?.length ?? 0); index++) {
-  //     const i = parseInt(path![index], 10);
-  //     if (i === 0) {
-  //       break;
-  //       // sections.push({
-  //       //   label: 0,
-  //       //   content: simpleRenderContent(contentGroup.content),
-  //       // });
-  //     } else if (i > 0 && i <= contentGroup.childGroups.length) {
-  //       contentGroup = contentGroup.childGroups[i - 1];
-  //     }
-  //   }
-  //   headerText = RenderText(contentGroup.heading.children)
-  //   sections.push({
-  //     label: 0,
-  //     content: simpleRenderContent(contentGroup.content),
-  //   });
-  //   if (contentGroup.linkedPath) {
-  //     const { } = getLinkedContent(contentGroup.linkedPath, fileMap, pageMap)
-  //   }
-  // }
-  // if (path === undefined) {
-  //   childGroups.forEach((cg, i) => {
-  //     sections.push({
-  //       label: i + 1,
-  //       content: <Section cg={cg} />,
-  //     })
-  //   }
-  //   );
   directoryChildren.forEach((node, i) =>
-    sections.push(
-      <Preview key={i} tree={node} mainHeadingRef={mainHeadingRef} />
-    )
+    sections.push(<Preview key={i} tree={node} />)
   );
-  // }
 
   return (
-    // <motion.div layout layoutId={tree.canonicalLabel}>
     <div
       style={{
-        viewTransitionName: "top-section",
+        viewTransitionName: tree.canonicalLabel,
       }}
     >
-      {
-        <h1
-          ref={mainHeadingRef}
-          style={{
-            viewTransitionName: tree.canonicalLabel,
-          }}
-        >
-          {headerText}
-        </h1>
-      }
+      {<h1>{headerText}</h1>}
       {sections}
-      {/* </motion.div> */}
     </div>
   );
 }
-
-const LinkCatchingContext = createContext<((link: string) => void) | undefined>(
-  undefined
-);
-const CurrentPathContext = createContext<string[]>([]);
 
 function RenderHeading(header: Heading, adjustHeadings: boolean) {
   const text = mdToReact(header.children);
@@ -155,54 +93,14 @@ function simpleRenderContent(
   });
 }
 
-// function LinkableSection({
-//   selected,
-//   children,
-//   label,
-// }: {
-//   selected: boolean;
-//   children: React.ReactNode;
-//   label: string;
-// }) {
-//   const router = useRouter();
-//   const currentPath = usePathname();
-
-//   return (
-//     <div
-//       className={`section-container ${selected ? "selected" : ""}`}
-//       onClick={() => {
-//         // @ts-expect-error
-//         if (!document.startViewTransition) {
-//           router.push(`${currentPath}/${label}`);
-//           return;
-//         }
-//         // @ts-expect-error
-//         document.startViewTransition(() => {
-//           router.push(`${currentPath}/${label}`);
-//         });
-//       }}
-//     >
-//       {children}
-//     </div>
-//   );
-// }
-
 function getLinkedContent(link: string, fileMap: FileMapDir, pageMap: PathMap) {
   const { currentFileMap } = processNotePath(link.split("/").slice(2), fileMap);
   return getContent(currentFileMap, pageMap);
 }
 
-function Preview({
-  tree,
-  mainHeadingRef,
-}: {
-  tree: FileMapItem;
-  mainHeadingRef: RefObject<HTMLHeadingElement>;
-}) {
-  // const router = useRouter();
+function Preview({ tree }: { tree: FileMapItem }) {
   const currentPath = usePathname();
   const path = `${currentPath}/${tree.canonicalLabel}`;
-  // router.prefetch(path);
   const { pageMap } = useContext(FileTreeContext);
   const { headerText, content, directoryChildren } = getContent(tree, pageMap);
   const topLevelContent = simpleRenderContent(content, true);
@@ -212,24 +110,17 @@ function Preview({
     <div
       ref={headingRef}
       className="max-h-48 overflow-auto border border-secondary px-4 my-8 mx-4"
+      style={{
+        viewTransitionName: tree.canonicalLabel,
+      }}
     >
       <Link href={path}>
-        <h2
-          // className={
-          //   tree.canonicalLabel === "leetcode" ? "notes-main-heading" : ""
-          // }
-          style={{
-            viewTransitionName: tree.canonicalLabel,
-          }}
-        >
-          {headerText}
-        </h2>
+        <h2>{headerText}</h2>
       </Link>
       {topLevelContent}
       {directoryChildren.map((node, i) => (
         <h3 key={i}>{node.label}</h3>
       ))}
-      {/* </motion.div> */}
     </div>
   );
 }
@@ -249,10 +140,4 @@ function Section({
       {simpleRenderContent(cg.content, adjustHeadings)}
     </details>
   );
-}
-
-function isIncludeInternalLink(content: PhrasingContent[]) {
-  return content.some((node) => {
-    return node.type === "link";
-  });
 }
