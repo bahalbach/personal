@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { internalLinkToken } from "../constants";
 import ExternalPage from "../_components/ExternalPage";
 import { usePathname } from "next/navigation";
+import { Link } from "next-view-transitions";
 
 function prefixInCommon(a: string, b: string) {
   let i = 0;
@@ -51,8 +52,8 @@ export default function CustomLink({
 
   return (
     <span className="link-container">
-      <a href={isInternal ? internalLink : href}>Custom! {children}</a>
-      <span className="link-preview" ref={ref}>
+      <Link href={isInternal ? internalLink : href}>{children}</Link>
+      {/* <span className="link-preview" ref={ref}>
         {isInternal ? (
           // <RenderMarkdown text="test internal link" />
           <span className="p-2 bg-black text-bodyText border-theme border">
@@ -61,7 +62,7 @@ export default function CustomLink({
         ) : (
           <ExternalPage targetUrl={href} />
         )}
-      </span>
+      </span> */}
     </span>
   );
 }

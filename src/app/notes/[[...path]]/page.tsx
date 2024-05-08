@@ -1,7 +1,7 @@
 // need a catch all route
 // get data from github
 
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 import { getNotes } from "../utils/getFileMap";
 import { makeCanonical } from "../utils/makeCanonical";

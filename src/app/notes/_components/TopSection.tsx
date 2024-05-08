@@ -209,33 +209,8 @@ function Preview({
   const headingRef = useRef<HTMLHeadingElement>(null);
 
   return (
-    // <motion.div
-    //   layout
-    //   layoutId={tree.canonicalLabel}
     <div
       ref={headingRef}
-      // onClick={() => {
-      //   if (!document.startViewTransition) {
-      //     router.push(path);
-      //     return;
-      //   }
-      //   // console.log("document.startViewTransition");
-      //   // mainHeadingRef.current!.style.viewTransitionName = "";
-      //   // headingRef.current!.style.viewTransitionName = "notes-main-heading";
-      //   // console.log(
-      //   //   "mainHeadingRef.current!.style",
-      //   //   mainHeadingRef.current!.style.viewTransitionName
-      //   // );
-      //   document.startViewTransition(() => {
-      //     flushSync(() => {
-      //       // headingRef.current?.setAttribute()
-      //       router.push(path);
-      //       // headingRef.current!.style.viewTransitionName = "";
-      //       // mainHeadingRef.current!.style.viewTransitionName =
-      //       //   "notes-main-heading";
-      //     });
-      //   });
-      // }}
       className="max-h-48 overflow-auto border border-secondary px-4 my-8 mx-4"
     >
       <Link href={path}>
