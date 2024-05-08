@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 
 export async function local_cache<T>(label: string, getter: () => Promise<T>) {
-  if (process.env.NODE_ENV !== "development") return getter();
+  if (!process.env.LOCAL_DEV) return getter();
   const filepath = process.cwd() + `/github_files/${label}.json`;
   try {
     const fileContent = await fs.readFile(filepath, "utf8");
