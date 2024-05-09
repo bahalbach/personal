@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useContext } from "react";
 import { internalLinkToken } from "../constants";
-import ExternalPage from "../_components/ExternalPage";
-import { usePathname } from "next/navigation";
+// import ExternalPage from "../_components/ExternalPage";
 import { Link } from "next-view-transitions";
+import { PathContext } from "../_contexts/PathContext";
 
 function prefixInCommon(a: string, b: string) {
   let i = 0;
@@ -27,13 +27,8 @@ export default function CustomLink({
   className: string;
   href: string;
 }) {
-  // const currentPath = useContext(CurrentPathContext).join("/");
-  const currentPath = usePathname() ?? "";
-  // const catchLink = useContext(LinkCatchingContext);
-  const ref = useRef<HTMLDivElement>(null);
+  const currentPath = useContext(PathContext);
   const isInternal = href.startsWith(internalLinkToken);
-
-  // TODO: need to find link using file tree
 
   let internalLink = "";
   if (isInternal) {

@@ -7,6 +7,7 @@ import { getNotes } from "../utils/getFileMap";
 import { makeCanonical } from "../utils/makeCanonical";
 import { processNotePath } from "../utils/processNotePath";
 import TopSection from "../_components/TopSection";
+import { PathContextProvider } from "../_contexts/PathContext";
 
 // non generated will be a 404
 // export const dynamicParams = false;
@@ -48,14 +49,14 @@ export default async function Page({
     <nav>
       <ul className="flex gap-4 p-4">
         {validPath.map((value, pathIndex) => (
-          <li key={value}>
+          <li key={`${pathIndex}-${value}`}>
             <Link href={`/${validPath.slice(0, pathIndex + 1).join("/")}`}>
               {validPathLabels[pathIndex]}
             </Link>
           </li>
         ))}
-        {invalidPath?.map((value) => (
-          <li className="text-error" key={value}>
+        {invalidPath?.map((value, pathIndex) => (
+          <li className="text-error" key={`invalid-${pathIndex}-${value}`}>
             {value}
           </li>
         ))}
@@ -68,10 +69,12 @@ export default async function Page({
   // const noteTree = <NoteTree active={true} tree={currentFileMap} />;
   const topSection = <TopSection tree={currentFileMap} path={invalidPath} />;
   return (
-    <div className="p-4">
-      {nav}
-      {invalidPathNotice}
-      <article className="markdown-body">{topSection}</article>
+    <div className="p-8">
+      <PathContextProvider path={`/${validPath.join("/")}`}>
+        {nav}
+        {invalidPathNotice}
+        <article className="markdown-body">{topSection}</article>
+      </PathContextProvider>
     </div>
   );
 }

@@ -4,10 +4,10 @@ import type { Heading, RootContent } from "mdast";
 import { useContext, Fragment, useRef } from "react";
 import { FileTreeContext } from "../_contexts/FileTreeContext";
 import { processNotePath } from "../utils/processNotePath";
-import { usePathname } from "next/navigation";
 import { mdToReact } from "../utils/mdToReact";
 import { getContent } from "../utils/getContent";
 import { Link } from "next-view-transitions";
+import { PathContext } from "../_contexts/PathContext";
 
 export default function TopSection({
   tree,
@@ -99,7 +99,7 @@ function getLinkedContent(link: string, fileMap: FileMapDir, pageMap: PathMap) {
 }
 
 function Preview({ tree }: { tree: FileMapItem }) {
-  const currentPath = usePathname();
+  const currentPath = useContext(PathContext);
   const path = `${currentPath}/${tree.canonicalLabel}`;
   const { pageMap } = useContext(FileTreeContext);
   const { headerText, content, directoryChildren } = getContent(tree, pageMap);

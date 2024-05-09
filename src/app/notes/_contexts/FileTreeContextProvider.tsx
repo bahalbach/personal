@@ -2,7 +2,6 @@
 
 import { FileTreeContext } from "./FileTreeContext";
 
-// @ts-ignore
 const FileTreeContextProvider = ({
   value,
   children,
