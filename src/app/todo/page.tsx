@@ -1,10 +1,36 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
+const LocalStorageKey = "todos";
 export default function Page({}) {
   const [completed, setCompleted] = useState<string[]>([]);
   const [todos, setTodos] = useState<string[]>([]);
+  const [loaded, setLoaded] = useState(false);
+  // load todo state from local storage
+  useEffect(() => {
+    let savedTodosString = null;
+    try {
+      savedTodosString = localStorage.getItem(LocalStorageKey);
+    } catch {}
+    setLoaded(true);
+    if (savedTodosString === null) return;
+
+    const { todos, completed } = JSON.parse(savedTodosString);
+    setCompleted(completed);
+    setTodos(todos);
+  }, []);
+  const saveStateToLocalStorage = () => {
+    if (!loaded) return;
+    const savedTodosString = JSON.stringify({
+      todos,
+      completed,
+    });
+    try {
+      localStorage.setItem(LocalStorageKey, savedTodosString);
+    } catch {}
+  };
+  useEffect(saveStateToLocalStorage, [todos, completed, loaded]);
   const onAddTodo = useCallback(
     (todo: string) => {
       setTodos((oldTodos) => {
@@ -42,11 +68,13 @@ export default function Page({}) {
 
   return (
     <div className="grid items-center justify-center p-8">
-      <div className="flex flex-col gap-4">
-        <ul className="flex flex-col gap-2">{completedList}</ul>
-        <ul className="flex flex-col gap-2">{todoList}</ul>
-        <TodoInput onAddTodo={onAddTodo} />
-      </div>
+      {loaded ? (
+        <div className="flex flex-col gap-4">
+          <ul className="flex flex-col gap-2">{completedList}</ul>
+          <ul className="flex flex-col gap-2">{todoList}</ul>
+          <TodoInput onAddTodo={onAddTodo} />
+        </div>
+      ) : null}
     </div>
   );
 }
