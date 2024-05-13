@@ -52,6 +52,28 @@ export default function Page({}) {
     },
     [todos, completed]
   );
+  const [displayExportNotice, setDisplayExportNotice] = useState(false);
+  const exportNoticeDisplayTimeMs = 1000;
+  const exportTodos = () => {
+    const savedTodosString = JSON.stringify({
+      todos,
+      completed,
+    });
+    navigator.clipboard.writeText(savedTodosString);
+    setDisplayExportNotice(true);
+    setTimeout(() => setDisplayExportNotice(false), exportNoticeDisplayTimeMs);
+  };
+  const exportNotice = (
+    <div
+      data-show={displayExportNotice}
+      className="transition-opacity ease-linear"
+      style={{
+        opacity: displayExportNotice ? 1 : 0,
+      }}
+    >
+      Todos copied to clipboard
+    </div>
+  );
 
   const completedList = completed.map((item) => (
     <li key={item}>
@@ -73,6 +95,8 @@ export default function Page({}) {
           <ul className="flex flex-col gap-2">{completedList}</ul>
           <ul className="flex flex-col gap-2">{todoList}</ul>
           <TodoInput onAddTodo={onAddTodo} />
+          <button onClick={exportTodos}>Export</button>
+          {exportNotice}
         </div>
       ) : null}
     </div>
