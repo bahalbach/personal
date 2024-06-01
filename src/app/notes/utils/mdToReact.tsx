@@ -1,5 +1,3 @@
-"use client";
-
 import * as prod from "react/jsx-runtime";
 import { unified } from "unified";
 
@@ -27,7 +25,7 @@ export function mdToReact(content: RootContent[]) {
   return html;
 }
 
-async function RenderMdastToHtml(mdast: Root) {
+export async function RenderMdastToHtml(mdast: Root) {
   const rhast = unified().use(remarkRehype).runSync(mdast);
   // @ts-ignore
   const html = unified().use(rehypeReact, production).stringify(rhast);

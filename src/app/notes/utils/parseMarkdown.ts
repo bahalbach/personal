@@ -7,13 +7,14 @@ import { resolveInternalLink } from "../utils/resolveInternalLink";
 
 import { internalLinkToken } from "../constants";
 
-export function parseMarkdown(markdown: string, pageMap: PathMap) {
+export function parseMarkdown(markdown: string, pageMap?: PathMap) {
   return unified()
     .use(remarkParse)
     .use(remarkFrontmatter)
     .use(remarkGfm)
     .use(wikiLinkPlugin, {
       pageResolver: (pageName: string) => {
+        if (!pageMap) return pageName;
         const linkOptions = resolveInternalLink(pageMap, pageName);
         // console.log(`link pageName: ${pageName}, options: ${linkOptions}`);
         // return [makeCanonical(pageName)];
@@ -21,6 +22,7 @@ export function parseMarkdown(markdown: string, pageMap: PathMap) {
         return [linkOptions.join("|")];
       },
       hrefTemplate: (permalink: string) => {
+        if (!pageMap) return permalink;
         return `${internalLinkToken}${permalink}`;
       },
       // hrefTemplate: (permalink: string) => {

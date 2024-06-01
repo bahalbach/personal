@@ -10,7 +10,7 @@ import TopSection from "../_components/TopSection";
 import { PathContextProvider } from "../_contexts/PathContext";
 
 // non generated will be a 404
-// export const dynamicParams = false;
+export const dynamicParams = false;
 export async function generateStaticParams() {
   const { fileMap } = await getNotes();
   // const stack = [fileMap];
@@ -37,7 +37,7 @@ export default async function Page({
 }: {
   params: { path?: string[] };
 }) {
-  console.log("render notes page", path);
+  // console.log("render notes page", path);
   const { fileMap } = await getNotes();
 
   const { currentFileMap, validPath, validPathLabels, invalidPath } =
