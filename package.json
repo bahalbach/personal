@@ -1,13 +1,14 @@
 {
   "name": "personal",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "release": "rm github_files/tree.json && vercel build --prod && vercel deploy --prebuilt --prod"
   },
   "dependencies": {
     "@types/mdast": "^4.0.3",
