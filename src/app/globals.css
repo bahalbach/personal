@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "markdown.css";
+
+/* view transition names */
+.navbar {
+  view-transition-name: navbar;
+}
+/* ::view-transition-old(navbar) {
+  animation: none;
+}
+::view-transition-new(navbar) {
+  animation: none;
+} */
+
+.markdown-body {
+  /* background-color: wheat;
+  color: black;
+  font-size: 16px; */
+  .section-container.selected {
+    outline-width: 2px;
+    outline-offset: 5px;
+    outline-style: solid;
+    outline-color: greenyellow;
+  }
+
+  p {
+    /* margin: 16px; */
+    white-space: pre-line;
+  }
+
+  /* pre {
+    padding: 16px;
+    font-family: monospace;
+    margin: 16px;
+    background-color: black;
+    color: white;
+    max-width: 100%;
+    white-space: pre;
+    overflow-x: auto;
+  } */
+}
+
+:root {
+  --opacity-light: 1;
+  --opacity-dark: 0;
+
+  --white: white;
+  --gray-1: rgb(243, 244, 246);
+  --gray-2: rgb(229, 231, 235);
+  --gray-3: rgb(209, 213, 219);
+  --gray-4: rgb(229, 231, 235);
+  --gray-5: rgb(107, 114, 128);
+  --gray-6: rgb(229, 231, 235);
+  --gray-7: rgb(75, 85, 99);
+  --gray-8: rgb(55, 65, 81);
+  --gray-9: rgb(31, 41, 55);
+  --gray-10: rgb(17, 24, 39);
+  --black: black;
+
+  /* responsive colors */
+  --background-color: var(--gray-2);
+  --card-color: var(--gray-1);
+  --icon-color: var(--gray-7);
+  --separator-color: white;
+  --body-text-color: var(--gray-8);
+  --standout-text-color: black;
+  --mid-text-color: var(--gray-9);
+  --header-text-color: var(--gray-5);
+  --subtitle-text-color: var(--gray-5);
+  --title-text-color: black;
+
+  --theme-color: rgb(59, 130, 246);
+  --theme-light-color: rgb(59, 130, 246);
+  --theme-dark-color: rgb(29, 78, 216);
+  --secondary-color: rgb(234 179 8);
+
+  /* other */
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+[data-theme="dark"] {
+  --opacity-light: 0;
+  --opacity-dark: 1;
+
+  /* responsive colors */
+  --background-color: var(--gray-10);
+  --card-color: var(--gray-8);
+  --icon-color: var(--gray-3);
+  --separator-color: var(--gray-8);
+  --body-text-color: var(--gray-3);
+  --standout-text-color: var(--gray-3);
+  --mid-text-color: var(--gray-2);
+  --header-text-color: var(--gray-5);
+  --subtitle-text-color: var(--gray-3);
+  --title-text-color: var(--gray-1);
+
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
+}
+
+/* body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+} */
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
