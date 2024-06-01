@@ -45,7 +45,7 @@ function groupContent(label: string, content: RootContent[]) {
         element.depth = 2;
         // TODO: better handling multiple h1
         // use level0conent?
-        console.error("multiple titles in content", content);
+        // console.error("multiple titles in content", label);
       }
       while (contentGroups.at(-1)!.heading.depth >= element.depth) {
         contentGroups.pop();

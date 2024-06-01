@@ -20,7 +20,8 @@ export async function generateStaticParams() {
     const genFilePaths = (curFileMap: FileMapItem) => {
       // if (curFileMap.type === "markdown") return;
       currentPath.push(curFileMap.canonicalLabel);
-      params.push({ path: currentPath.slice() });
+      // slice from 1, because 'notes' is already in this route
+      params.push({ path: currentPath.slice(1) });
       if (curFileMap.type !== "markdown")
         curFileMap.children.forEach(genFilePaths);
       currentPath.pop();
