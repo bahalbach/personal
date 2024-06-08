@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "next-view-transitions";
+import { Link } from "@bahalbach/next-view-transitions";
 
 import { processNotePath } from "../utils/processNotePath";
 import TopSection from "../_components/TopSection";
