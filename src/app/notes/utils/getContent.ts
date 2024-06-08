@@ -1,6 +1,7 @@
 import { PhrasingContent, RootContent } from "mdast";
 import { parseMarkdown } from "./parseMarkdown";
 import { internalLinkToken } from "../constants";
+import { ContentGroup, FileMapItem, PathMap } from "../types";
 
 function getHeaderLinkedContent(children: PhrasingContent[]): string | null {
   for (let index = 0; index < children.length; index++) {
@@ -20,7 +21,35 @@ function getHeaderLinkedContent(children: PhrasingContent[]): string | null {
   return null;
 }
 
+function getHeaderText(children: PhrasingContent[]): string {
+  return children
+    .flatMap((child) => {
+      // "break" | "delete" | "emphasis" | "footnoteReference" | "html" | "image" | "imageReference" | "inlineCode" | "link" | "linkReference" | "strong" | "text" | "mdxTextExpression" | "mdxJsxTextElement"
+      switch (child.type) {
+        case "break":
+        case "delete":
+        case "footnoteReference":
+        case "html":
+        case "image":
+        case "imageReference":
+        case "linkReference":
+          return "";
+        case "emphasis":
+        case "link":
+        case "strong":
+        case "mdxJsxTextElement":
+          return getHeaderText(child.children);
+        case "text":
+        case "inlineCode":
+        case "mdxTextExpression":
+          return child.value;
+      }
+    })
+    .join("");
+}
+
 function groupContent(label: string, content: RootContent[]) {
+  let headerCount = 0;
   const level1Content: ContentGroup = {
     heading: {
       type: "heading",
@@ -32,6 +61,8 @@ function groupContent(label: string, content: RootContent[]) {
         },
       ],
     },
+    headerText: label,
+    headerId: `${label}-${headerCount++}`,
     // flatContent: [],
     baseContent: [],
     childGroups: [],
@@ -53,6 +84,8 @@ function groupContent(label: string, content: RootContent[]) {
 
       const newGroup: ContentGroup = {
         heading: element,
+        headerText: getHeaderText(element.children),
+        headerId: `${label}-${headerCount++}`,
         baseContent: [],
         childGroups: [],
         content: [],
@@ -82,7 +115,7 @@ function groupContent(label: string, content: RootContent[]) {
 export function getContent(tree: FileMapItem, pageMap: PathMap) {
   const { type, label, content } = tree;
   const headerText = tree.label;
-  let contentGroup;
+  let contentGroup: ContentGroup | undefined;
   let allContent;
   if (content) {
     const mdast = parseMarkdown(content, pageMap);

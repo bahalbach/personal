@@ -24,7 +24,7 @@ export const getGithubFileContent = cache(
         return text;
       }
 
-      return local_cache(`${label}-${sha}`, getter);
+      return local_cache(sha, getter);
     },
     ["github-markdown-page"]
   )

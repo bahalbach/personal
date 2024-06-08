@@ -4,6 +4,7 @@ import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import { getGithubFileContent } from "./getGithubFileContent";
 import { local_cache } from "./local_cache";
+import { FileMapDir, FileMapItem, PathItem, PathMap } from "../types";
 
 const fetchGithubTree = cache(
   unstable_cache(async () => {
@@ -38,24 +39,27 @@ async function generateFileMap(
     label: "Notes",
     canonicalLabel: "notes",
     children: new Map(),
-    path: ["notes"],
+    // path: ["notes"],
+    fullpath: "/notes",
   };
   treeLoop: for (let index = 0; index < tree.length; index++) {
     const { path, type, sha } = tree[index];
     if (!path) continue;
     const isDir = type === "tree";
     const isMd = type === "blob" && path.endsWith(".md");
-    if (!(isDir || isMd)) continue;
-    const processedPath = isMd ? path.replace(".md", "") : path;
 
+    if (!(isDir || isMd)) continue;
+
+    const processedPath = isMd ? path.replace(".md", "") : path;
     const parts = processedPath.split("/");
-    const pathParts = parts.map(makeCanonical);
+    // don't include private folders
+    if (parts.some((part) => part.at(0) === "_")) continue treeLoop;
+
+    const fullpath = `/notes/${parts.map(makeCanonical).join("/")}`;
+    // const fullpath = `/notes?note=${parts.map(makeCanonical).join("/")}`;
     let currentDir: FileMapDir = fileMap;
     for (let pathIndex = 0; pathIndex < parts.length - 1; pathIndex++) {
       const part = makeCanonical(parts[pathIndex]);
-      // don't include private folders
-      if (part.at(0) === "_") continue treeLoop;
-
       const childItem = currentDir.children.get(part);
       if (!(childItem?.type === "directory")) {
         console.error("path failure at", part, fileMap, path);
@@ -65,8 +69,6 @@ async function generateFileMap(
     }
     const label = parts.at(-1)!;
     const canonicalLabel = makeCanonical(label);
-    // don't include private files/folders
-    if (canonicalLabel.at(0) === "_") continue treeLoop;
 
     let newChild: FileMapItem | undefined;
     if (isDir) {
@@ -75,7 +77,7 @@ async function generateFileMap(
         label,
         canonicalLabel,
         children: new Map(),
-        path: pathParts,
+        fullpath: fullpath,
       };
     }
     if (isMd) {
@@ -101,7 +103,7 @@ async function generateFileMap(
           label,
           canonicalLabel,
           content,
-          path: pathParts,
+          fullpath: fullpath,
         };
       }
     }
@@ -117,7 +119,7 @@ function addItem(dirMap: PathMap, label: string, item: PathItem) {
   if (!dirMap.children.has(label)) {
     dirMap.children.set(label, [item]);
   } else {
-    dirMap.children.get(label)?.push(item);
+    dirMap.children.get(label)!.push(item);
   }
 }
 

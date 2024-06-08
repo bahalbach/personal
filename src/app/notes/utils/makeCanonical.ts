@@ -1,3 +1,3 @@
 export function makeCanonical(label: string) {
-  return label.toLowerCase().replace(/[ ,]/g, "_");
+  return encodeURIComponent(label.toLowerCase().replace(/[ ]/g, "_"));
 }

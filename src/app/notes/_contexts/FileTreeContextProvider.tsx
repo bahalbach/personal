@@ -1,5 +1,6 @@
 "use client";
 
+import { FileTreeContextValue } from "../types";
 import { FileTreeContext } from "./FileTreeContext";
 
 const FileTreeContextProvider = ({

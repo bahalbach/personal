@@ -7,18 +7,20 @@ import { processNotePath } from "../utils/processNotePath";
 import { mdToReact } from "../utils/mdToReact";
 import { getContent } from "../utils/getContent";
 import { Link } from "next-view-transitions";
-import { PathContext } from "../_contexts/PathContext";
+import { ContentGroup, FileMapDir, FileMapItem, PathMap } from "../types";
+import { isContentGroup } from "../utils/isContentGroup";
 
 export default function TopSection({
   tree,
+  content,
+  directoryChildren,
   path,
 }: {
   tree: FileMapItem;
+  content: (RootContent | ContentGroup)[];
+  directoryChildren: FileMapItem[];
   path?: string[];
 }) {
-  const { pageMap, fileMap } = useContext(FileTreeContext);
-  let { content, childGroups, allContent, directoryChildren, contentGroup } =
-    getContent(tree, pageMap);
   const headerText = tree.label;
   const sections: React.ReactNode[] = [];
 
@@ -40,36 +42,26 @@ export default function TopSection({
   );
 }
 
-function RenderHeading(header: Heading, adjustHeadings: boolean) {
-  const text = mdToReact(header.children);
-  const depth = header.depth + (adjustHeadings ? 1 : 0);
+function RenderHeading(cg: ContentGroup, adjustHeadings: boolean) {
+  const text = mdToReact(cg.heading.children);
+  const depth = cg.heading.depth + (adjustHeadings ? 1 : 0);
   switch (depth) {
     case 1:
-      return <h1>{text}</h1>;
+      return <h1 id={cg.headerId}>{text}</h1>;
     case 2:
-      return <h2>{text}</h2>;
+      return <h2 id={cg.headerId}>{text}</h2>;
     case 3:
-      return <h3>{text}</h3>;
+      return <h3 id={cg.headerId}>{text}</h3>;
     case 4:
-      return <h4>{text}</h4>;
+      return <h4 id={cg.headerId}>{text}</h4>;
     case 5:
-      return <h5>{text}</h5>;
+      return <h5 id={cg.headerId}>{text}</h5>;
     case 6:
     default:
-      return <h6>{text}</h6>;
+      return <h6 id={cg.headerId}>{text}</h6>;
   }
 }
 
-function isContentGroup(obj: any): obj is ContentGroup {
-  return (
-    typeof obj === "object" &&
-    "heading" in obj &&
-    "content" in obj &&
-    Array.isArray(obj.content) &&
-    "childGroups" in obj &&
-    Array.isArray(obj.childGroups)
-  );
-}
 /**
  * TODO: make work with links in headers like Section
  * @param content
@@ -99,8 +91,8 @@ function getLinkedContent(link: string, fileMap: FileMapDir, pageMap: PathMap) {
 }
 
 function Preview({ tree }: { tree: FileMapItem }) {
-  const currentPath = useContext(PathContext);
-  const path = `${currentPath}/${tree.canonicalLabel}`;
+  // const currentPath = useContext(PathContext);
+  // const path = `${currentPath}/${tree.canonicalLabel}`;
   const { pageMap } = useContext(FileTreeContext);
   const { headerText, content, directoryChildren } = getContent(tree, pageMap);
   const topLevelContent = simpleRenderContent(content, true);
@@ -114,7 +106,7 @@ function Preview({ tree }: { tree: FileMapItem }) {
         viewTransitionName: tree.canonicalLabel,
       }}
     >
-      <Link href={path}>
+      <Link shallow={true} href={tree.fullpath}>
         <h2>{headerText}</h2>
       </Link>
       {topLevelContent}
@@ -132,7 +124,7 @@ function Section({
   cg: ContentGroup;
   adjustHeadings: boolean;
 }) {
-  const heading = RenderHeading(cg.heading, adjustHeadings);
+  const heading = RenderHeading(cg, adjustHeadings);
   if (cg.content.length === 0) return heading;
   return (
     <details open>

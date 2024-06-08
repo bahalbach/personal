@@ -6,6 +6,7 @@ import wikiLinkPlugin from "remark-wiki-link";
 import { resolveInternalLink } from "../utils/resolveInternalLink";
 
 import { internalLinkToken } from "../constants";
+import { PathMap } from "../types";
 
 export function parseMarkdown(markdown: string, pageMap?: PathMap) {
   return unified()
