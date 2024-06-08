@@ -41,13 +41,21 @@ export default function CustomLink({
         longestInCommon = length;
       }
     }
+    return (
+      <Link shallow={true} className={className} href={internalLink}>
+        {/* @ts-ignore */}
+        {children}
+      </Link>
+    );
     // console.log("link", href, internalLinkOptions, internalLink);
     // catchLink?.(internalLink);
   }
 
   return (
     <span className="link-container">
-      <Link href={isInternal ? internalLink : href}>{children}</Link>
+      <a className={className} href={href}>
+        {children}
+      </a>
       {/* <span className="link-preview" ref={ref}>
         {isInternal ? (
           // <RenderMarkdown text="test internal link" />

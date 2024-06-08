@@ -1,4 +1,4 @@
-import { makeCanonical } from "./makeCanonical";
+import { FileMapDir, FileMapItem } from "../types";
 
 export function processNotePath(
   path: string[] | undefined,
@@ -9,14 +9,14 @@ export function processNotePath(
   const validPathLabels: string[] = [fileMap.label];
   let invalidPath;
   let label;
+
   if (path) {
     for (let pathIndex = 0; pathIndex < path.length; pathIndex++) {
-      label = makeCanonical(path[pathIndex]);
+      label = path[pathIndex];
       if (
         !(currentFileMap.type === "directory") ||
         !currentFileMap.children.has(label)
       ) {
-        // console.log("ivv", currentFileMap);
         invalidPath = path.slice(pathIndex);
         break;
       }

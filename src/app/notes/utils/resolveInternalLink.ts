@@ -1,3 +1,4 @@
+import { PathItem, PathMap } from "../types";
 import { makeCanonical } from "./makeCanonical";
 
 export function resolveInternalLink(pageMap: PathMap, internalLink: string) {

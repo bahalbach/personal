@@ -1,8 +1,11 @@
+import type { RootContent } from "mdast";
+
 type FileMapBase = {
   label: string;
   canonicalLabel: string;
   // lastUpdated: Date;
-  path: string[];
+  // path: string[];
+  fullpath: string;
 };
 type FileMapMd = FileMapBase & {
   type: "markdown";
@@ -44,6 +47,8 @@ type FileTreeContextValue = {
  */
 type ContentGroup = {
   heading: Heading;
+  headerText: string;
+  headerId: string;
   linkedPath?: string;
   /**
    * all content after this header and before the first this+1 level header
@@ -64,4 +69,15 @@ type ContentGroup = {
    */
   content: (ContentGroup | RootContent)[];
   // content: (RootContent | ContentGroup)[];
+};
+
+export {
+  FileMapBase,
+  FileMapDir,
+  FileMapItem,
+  FileMapMd,
+  FileTreeContextValue,
+  PathItem,
+  PathMap,
+  ContentGroup,
 };

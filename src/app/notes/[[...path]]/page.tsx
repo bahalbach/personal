@@ -1,81 +1,40 @@
-// need a catch all route
-// get data from github
-
-import { Link } from "next-view-transitions";
-
+import { Suspense } from "react";
+import PageContent from "./PageContent";
 import { getNotes } from "../utils/getFileMap";
-import { makeCanonical } from "../utils/makeCanonical";
-import { processNotePath } from "../utils/processNotePath";
-import TopSection from "../_components/TopSection";
-import { PathContextProvider } from "../_contexts/PathContext";
+import { FileMapDir, FileMapItem } from "../types";
 
-// non generated will be a 404
-export const dynamicParams = false;
-export async function generateStaticParams() {
-  const { fileMap } = await getNotes();
-  // const stack = [fileMap];
-  const params: { path: string[] }[] = [{ path: [] }];
+function generatePaths(fileMap: FileMapDir) {
+  const paths: string[][] = [];
   const currentPath: string[] = [];
-  if (process.env.NODE_ENV !== "development") {
-    const genFilePaths = (curFileMap: FileMapItem) => {
-      // if (curFileMap.type === "markdown") return;
-      currentPath.push(curFileMap.canonicalLabel);
-      // slice from 1, because 'notes' is already in this route
-      params.push({ path: currentPath.slice(1) });
-      if (curFileMap.type !== "markdown")
-        curFileMap.children.forEach(genFilePaths);
-      currentPath.pop();
-    };
-    genFilePaths(fileMap);
+  const genFilePaths = (curFileMap: FileMapItem) => {
+    currentPath.push(curFileMap.canonicalLabel);
+    // slice from 1, because 'notes' is already in this route
+    paths.push(currentPath.slice(1));
+    if (curFileMap.type !== "markdown")
+      curFileMap.children.forEach(genFilePaths);
+    currentPath.pop();
+  };
+  genFilePaths(fileMap);
+  return paths;
+}
 
-    console.log("gened params", params.length, params);
+// Trying out this as a client component, comment out below
+// non generated will be a 404
+export const dynamicParams = process.env.NODE_ENV === "development";
+
+export async function generateStaticParams() {
+  if (process.env.NODE_ENV === "development") {
+    return [];
   }
+  const { fileMap } = await getNotes();
+  const params = generatePaths(fileMap).map((path) => ({ path }));
   return params;
 }
 
-export default async function Page({
-  params: { path },
-}: {
-  params: { path?: string[] };
-}) {
-  // console.log("render notes page", path);
-  const { fileMap } = await getNotes();
-
-  const { currentFileMap, validPath, validPathLabels, invalidPath } =
-    processNotePath(path, fileMap);
-
-  // TODO: have nav links to go back to linking entities, for
-  // when there are internal links that aren't parent-child
-  const nav = (
-    <nav>
-      <ul className="flex gap-4 p-4">
-        {validPath.map((value, pathIndex) => (
-          <li key={`${pathIndex}-${value}`}>
-            <Link href={`/${validPath.slice(0, pathIndex + 1).join("/")}`}>
-              {validPathLabels[pathIndex]}
-            </Link>
-          </li>
-        ))}
-        {invalidPath?.map((value, pathIndex) => (
-          <li className="text-error" key={`invalid-${pathIndex}-${value}`}>
-            {value}
-          </li>
-        ))}
-      </ul>
-    </nav>
-  );
-  const invalidPathNotice = invalidPath ? (
-    <div className="p-4">The path {invalidPath.join("/")} is not valid</div>
-  ) : null;
-  // const noteTree = <NoteTree active={true} tree={currentFileMap} />;
-  const topSection = <TopSection tree={currentFileMap} path={invalidPath} />;
+export default async function Page() {
   return (
-    <div className="p-8">
-      <PathContextProvider path={`/${validPath.join("/")}`}>
-        {nav}
-        {invalidPathNotice}
-        <article className="markdown-body">{topSection}</article>
-      </PathContextProvider>
-    </div>
+    <Suspense>
+      <PageContent />
+    </Suspense>
   );
 }
