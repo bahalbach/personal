@@ -6,7 +6,7 @@ import { FileTreeContext } from "../_contexts/FileTreeContext";
 import { processNotePath } from "../utils/processNotePath";
 import { mdToReact } from "../utils/mdToReact";
 import { getContent } from "../utils/getContent";
-import { Link } from "next-view-transitions";
+import { Link } from "@bahalbach/next-view-transitions";
 import { ContentGroup, FileMapDir, FileMapItem, PathMap } from "../types";
 import { isContentGroup } from "../utils/isContentGroup";
 

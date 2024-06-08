@@ -3,7 +3,7 @@
 import { useContext } from "react";
 import { internalLinkToken } from "../constants";
 // import ExternalPage from "../_components/ExternalPage";
-import { Link } from "next-view-transitions";
+import { Link } from "@bahalbach/next-view-transitions";
 import { PathContext } from "../_contexts/PathContext";
 
 function prefixInCommon(a: string, b: string) {

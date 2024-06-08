@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@bahalbach/next-view-transitions':
+        specifier: 0.3.0
+        version: 0.3.0(next@14.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/mdast':
         specifier: ^4.0.4
         version: 4.0.4
@@ -26,9 +29,6 @@ importers:
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      next-view-transitions:
-        specifier: link:../next-view-transitions
-        version: link:../next-view-transitions
       octokit:
         specifier: ^3.2.1
         version: 3.2.1
@@ -113,6 +113,13 @@ packages:
   '@babel/runtime@7.24.4':
     resolution: {integrity: sha512-dkxf7+hn8mFBwKjs9bvBlArzLVxVbS8usaPUDd5p2a9JCL9tB8OaOVN1isD4+Xyk4ns89/xeOmbQvgdK7IIVdA==}
     engines: {node: '>=6.9.0'}
+
+  '@bahalbach/next-view-transitions@0.3.0':
+    resolution: {integrity: sha512-odiQmaLTHwdU2DehZgr05rllMOwVX0lV4HfxWFt2VRyIsyET2pFV2236pbLQ/G1eyj4zYFTvlZhgEuoZgD+4xw==}
+    peerDependencies:
+      next: ^14.0.0
+      react: ^18.2.0
+      react-dom: ^18.2.0
 
   '@emnapi/runtime@1.2.0':
     resolution: {integrity: sha512-bV21/9LQmcQeCPEg3BDFtvwL6cwiTMksYNWQQ4KOxCZikEGalWtenoZ0wCiukJINlGCIi2KXx01g4FoH/LxpzQ==}
@@ -2921,6 +2928,12 @@ snapshots:
   '@babel/runtime@7.24.4':
     dependencies:
       regenerator-runtime: 0.14.1
+
+  '@bahalbach/next-view-transitions@0.3.0(next@14.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      next: 14.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   '@emnapi/runtime@1.2.0':
     dependencies:

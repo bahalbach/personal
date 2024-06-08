@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "next-themes";
-import { ViewTransitions } from "next-view-transitions";
+import { ViewTransitions } from "@bahalbach/next-view-transitions";
 
 // const inter = Inter({ subsets: ["latin"] });
 
