@@ -89,9 +89,9 @@ export default function Page() {
 function Outline({ content }: { content: (RootContent | ContentGroup)[] }) {
   return (
     <ul>
-          <a href={`#${cg.headerId}`}>{cg.headerText}</a>
       {content.filter(isContentGroup).map((cg, i) => (
         <li className="ml-4" key={i}>
+          <a href={`#${cg.headerId}`}>{cg.headerText}</a>
           <Outline content={cg.content} />
         </li>
       ))}
