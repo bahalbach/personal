@@ -65,22 +65,30 @@ export default function Page() {
   const contentOutline = <Outline key={pathname} content={content} />;
 
   const mainSection = (
-    <PathContextProvider path={`/${validPath.join("/")}`}>
-      {nav}
-      {invalidPathNotice}
-      <article className="markdown-body">{topSection}</article>
-    </PathContextProvider>
+    <div className="flex-1 grow-[3] max-w-max min-w-0">
+      <PathContextProvider path={`/${validPath.join("/")}`}>
+        {nav}
+        {invalidPathNotice}
+        <article className="markdown-body">{topSection}</article>
+      </PathContextProvider>
+    </div>
   );
 
-  const filesSidebar = <div className="hidden md:block">{files}</div>;
+  const filesSidebar = (
+    <div className="hidden lg:block overflow-y-auto sticky top-0 left-0 h-min max-h-screen min-w-48 max-w-72 flex-1">
+      {files}
+    </div>
+  );
   const outlineSidebar = (
-    <div className="hidden md:block">{contentOutline}</div>
+    <div className="hidden lg:block overflow-y-auto sticky top-0 right-0 h-min max-h-screen min-w-48 max-w-72 flex-1">
+      {contentOutline}
+    </div>
   );
 
   return (
-    <div className="p-2 md:p-8 flex">
+    <div className="p-2 md:p-8 gap-8 grow flex max-w-full mx-auto">
       {filesSidebar}
-      <div>{mainSection}</div>
+      {mainSection}
       {outlineSidebar}
     </div>
   );
@@ -90,8 +98,10 @@ function Outline({ content }: { content: (RootContent | ContentGroup)[] }) {
   return (
     <ul>
       {content.filter(isContentGroup).map((cg, i) => (
-        <li className="ml-4" key={i}>
-          <a href={`#${cg.headerId}`}>{cg.headerText}</a>
+        <li className="ml-4 mb-2" key={i}>
+          <Link className="block mb-2" shallow={true} href={`#${cg.headerId}`}>
+            {cg.headerText}
+          </Link>
           <Outline content={cg.content} />
         </li>
       ))}

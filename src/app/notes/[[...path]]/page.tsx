@@ -33,8 +33,8 @@ export async function generateStaticParams() {
 
 export default async function Page() {
   return (
-    <Suspense>
-      <PageContent />
-    </Suspense>
+    // <Suspense>
+    <PageContent />
+    // </Suspense>
   );
 }

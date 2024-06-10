@@ -9,7 +9,7 @@ import { AiFillPhone } from "react-icons/ai";
 
 const Home: NextPage = () => {
   return (
-    <>
+    <main className="flex flex-col w-full max-w-6xl mx-auto flex-auto items-stretch pb-10">
       <About />
       <Projects />
       <div className="flex justify-center">
@@ -32,7 +32,7 @@ const Home: NextPage = () => {
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 

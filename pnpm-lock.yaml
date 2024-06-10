@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@bahalbach/next-view-transitions':
-        specifier: 0.3.0
-        version: 0.3.0(next@14.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^0.3.1
+        version: 0.3.1(next@14.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/mdast':
         specifier: ^4.0.4
         version: 4.0.4
@@ -114,8 +114,8 @@ packages:
     resolution: {integrity: sha512-dkxf7+hn8mFBwKjs9bvBlArzLVxVbS8usaPUDd5p2a9JCL9tB8OaOVN1isD4+Xyk4ns89/xeOmbQvgdK7IIVdA==}
     engines: {node: '>=6.9.0'}
 
-  '@bahalbach/next-view-transitions@0.3.0':
-    resolution: {integrity: sha512-odiQmaLTHwdU2DehZgr05rllMOwVX0lV4HfxWFt2VRyIsyET2pFV2236pbLQ/G1eyj4zYFTvlZhgEuoZgD+4xw==}
+  '@bahalbach/next-view-transitions@0.3.1':
+    resolution: {integrity: sha512-/ynFg9lsKvHk4XXmMw6OTTCqu6SW9omD7HLbZ/qKGUwvRP2lQRfUIgKxhMBYTA/uzn9BBUwzo8QbCFuRPOh5Ig==}
     peerDependencies:
       next: ^14.0.0
       react: ^18.2.0
@@ -2929,7 +2929,7 @@ snapshots:
     dependencies:
       regenerator-runtime: 0.14.1
 
-  '@bahalbach/next-view-transitions@0.3.0(next@14.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@bahalbach/next-view-transitions@0.3.1(next@14.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       next: 14.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1

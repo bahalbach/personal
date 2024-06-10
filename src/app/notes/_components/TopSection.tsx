@@ -95,13 +95,13 @@ function Preview({ tree }: { tree: FileMapItem }) {
   // const path = `${currentPath}/${tree.canonicalLabel}`;
   const { pageMap } = useContext(FileTreeContext);
   const { headerText, content, directoryChildren } = getContent(tree, pageMap);
-  const topLevelContent = simpleRenderContent(content, true);
+  // const topLevelContent = simpleRenderContent(content, true);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
   return (
     <div
       ref={headingRef}
-      className="max-h-48 overflow-auto border border-secondary px-4 my-8 mx-4"
+      className="px-4 my-8 mx-4"
       style={{
         viewTransitionName: tree.canonicalLabel,
       }}
@@ -109,10 +109,10 @@ function Preview({ tree }: { tree: FileMapItem }) {
       <Link shallow={true} href={tree.fullpath}>
         <h2>{headerText}</h2>
       </Link>
-      {topLevelContent}
-      {directoryChildren.map((node, i) => (
+      {/* {topLevelContent} */}
+      {/* {directoryChildren.map((node, i) => (
         <h3 key={i}>{node.label}</h3>
-      ))}
+      ))} */}
     </div>
   );
 }

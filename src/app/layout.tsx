@@ -26,9 +26,7 @@ export default function RootLayout({
           <Analytics />
           <ThemeProvider>
             <Navbar />
-            <main className=" flex flex-col w-full max-w-6xl mx-auto flex-auto items-stretch pb-10">
-              {children}
-            </main>
+            {children}
             <Footer />
           </ThemeProvider>
         </body>
