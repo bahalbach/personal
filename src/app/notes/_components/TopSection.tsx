@@ -1,7 +1,7 @@
 "use client";
 
 import type { Heading, RootContent } from "mdast";
-import { useContext, Fragment, useRef } from "react";
+import { useContext, Fragment, useRef, useState } from "react";
 import { FileTreeContext } from "../_contexts/FileTreeContext";
 import { processNotePath } from "../utils/processNotePath";
 import { mdToReact } from "../utils/mdToReact";
@@ -124,12 +124,15 @@ function Section({
   cg: ContentGroup;
   adjustHeadings: boolean;
 }) {
+  const [isOpen, setIsOpen] = useState(true);
   const heading = RenderHeading(cg, adjustHeadings);
   if (cg.content.length === 0) return heading;
   return (
-    <details open>
-      <summary>{heading}</summary>
-      {simpleRenderContent(cg.content, adjustHeadings)}
-    </details>
+    <div className={"expander" + (isOpen ? " open" : "")}>
+      <summary onClick={() => setIsOpen(!isOpen)}>{heading}</summary>
+      <div className="inner">
+        {simpleRenderContent(cg.content, adjustHeadings)}
+      </div>
+    </div>
   );
 }
