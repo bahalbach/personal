@@ -127,6 +127,8 @@ function Section({
   const [isOpen, setIsOpen] = useState(true);
   const heading = RenderHeading(cg, adjustHeadings);
   if (cg.content.length === 0) return heading;
+  // TODO: have animation length depend on content size
+  // TODO: use details element again
   return (
     <div className={"expander" + (isOpen ? " open" : "")}>
       <summary onClick={() => setIsOpen(!isOpen)}>{heading}</summary>
